@@ -15,9 +15,9 @@ module.exports = {
         type: Sequelize.STRING,
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false,
       },
       role: {
         type: Sequelize.STRING,
@@ -33,6 +33,9 @@ module.exports = {
       },
       URL: {
         type: Sequelize.STRING,
+      },
+      is_delete: {
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
