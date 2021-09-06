@@ -1,9 +1,9 @@
-require('dotenv').config();
-const express = require('express');
-const session = require('express-session')
-const cors = require('cors')
+require("dotenv").config();
+const express = require("express");
+const session = require("express-session");
+const cors = require("cors");
 
-const routes = require('./routes')
+const routes = require("./routes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,8 +25,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.options('*', cors());
-app.use('/', routes);
+app.options("*", cors());
+app.use("/", routes);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
