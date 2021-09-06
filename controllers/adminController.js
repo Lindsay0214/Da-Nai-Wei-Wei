@@ -4,7 +4,6 @@ const User = db.User;
 const adminController = {
   addUser: async (req, res) => {
     const role = 'shop';
-    const is_delete = false;
     const { nickname, password, email, address, brand_name, Url } = req.body;
     try {
       await User.create({
@@ -15,13 +14,12 @@ const adminController = {
         address,
         brand_name,
         Url,
-        is_delete,
       });
       return await res.json({
         message: 'success',
       });
     } catch (error) {
-      console.log(123);
+      console.log(error);
     }
   },
   updateUser: async (req, res) => {
