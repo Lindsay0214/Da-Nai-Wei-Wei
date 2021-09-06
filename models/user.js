@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     brand_name: DataTypes.STRING,
     URL: DataTypes.STRING,
-    is_delete: DataTypes.BOOLEAN
+    is_deleted: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'User',
