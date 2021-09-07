@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session')
+const flash = require('connect-flash')
 const cors = require('cors')
 
 const routes = require('./routes')
@@ -14,13 +15,15 @@ app.use(cors());
 app.use(
   session({
     secret: process.env.SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: true,
   })
 );
 
+app.use(flash())
 app.use((req, res, next) => {
   res.locals.email = req.session.email;
+  res.locals.errorMessage = req.flash('errorMessage')
   res.locals.role = req.session.role;
   next();
 });
