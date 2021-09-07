@@ -74,7 +74,7 @@ const userController = {
   logout: (req, res) => {
     res.status(200).json({ok: 1, message: "成功登出囉～"});
   }
-  
+
 }
 
 module.exports = userController

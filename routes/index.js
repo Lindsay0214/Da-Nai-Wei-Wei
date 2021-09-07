@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const adminController = require('../controllers/adminController')
-const userController = require('../controllers/user')
+const userController = require('../controllers/userController')
 router.get('/', (req, res) => {
   res.json({
     message: 'welcome',
@@ -14,13 +14,14 @@ function redirectBack(req, res) {
 }
 
 // User
+router.get('/logout', userController.logout);
+router.post('/login', userController.login, redirectBack);
+router.post('/register', userController.register, redirectBack);
+
 router.get('/users/:id');
 router.get('/users/:nickname');
-router.get('/logout', userController.logout);
 router.get('/users/register', userController.register);
-router.post('/register', userController.register);
 router.post('/users/login', userController.login);
-router.post('/login', userController.login)
 
 router.post('/users', adminController.addUser);
 router.patch('/users/:id', adminController.updateUser);
