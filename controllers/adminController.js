@@ -1,9 +1,9 @@
-const db = require('../models');
+const db = require("../models");
 const User = db.User;
 
 const adminController = {
   addUser: async (req, res) => {
-    const role = 'shop';
+    const role = "shop";
     const { nickname, password, email, address, brand_name, Url } = req.body;
     try {
       await User.create({
@@ -16,7 +16,7 @@ const adminController = {
         Url,
       });
       return await res.json({
-        message: 'success',
+        message: "success",
       });
     } catch (error) {
       console.log(error);
@@ -37,13 +37,13 @@ const adminController = {
         role,
         address,
         brand_name,
-        Url
+        Url,
       });
       return await res.json({
-        message: 'success',
+        message: "success",
       });
     } catch (error) {
-      console.log(456)
+      console.log(456);
     }
   },
   deleteUser: async (req, res) => {
@@ -53,13 +53,13 @@ const adminController = {
         where: { id },
       });
       await user.update({
-        is_delete: true
+        is_delete: true,
       });
       return await res.json({
-        message: 'success',
+        message: "success",
       });
     } catch (error) {
-      console.log(456)
+      console.log(456);
     }
   },
 };
