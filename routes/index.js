@@ -13,10 +13,10 @@ router.get('/users/:id');
 router.get('/users/:nickname');
 router.post('/users/register');
 router.post('/users/login');
-router.get('/users',adminController.getAllShops);
-router.post('/users', adminController.addShop);
-router.patch('/users/:id', adminController.updateShop);
-router.delete('/users/:id', adminController.deleteShop);
+router.get('/shops',adminController.getAllShops);
+router.post('/shops', adminController.addShop);
+router.patch('/shops/:id', adminController.updateShop);
+router.delete('/shops/:id', adminController.deleteShop);
 
 // Products
 router.get('/products/:userId');
