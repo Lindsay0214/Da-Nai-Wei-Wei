@@ -1,5 +1,5 @@
 const db = require("../models");
-const Product = db.Product;
+const { Product } = db;
 
 const productController = {
   // 新增、編輯
@@ -8,10 +8,7 @@ const productController = {
     // 根據情況不同，給店家選擇 status
     const { categories, name, price } = req.body;
     if (!categories || !name || !price || !status) {
-      console.log("欄位請勿留白");
-      // 錯誤處理
-      //   req.flash("errorMessage", "欄位請勿留白");
-      //   return next();
+      return res.status(400).json({ ok: 0, message: "上面欄位，填好，填滿" });
     }
     try {
       await Product.create({
@@ -21,26 +18,23 @@ const productController = {
         // 這邊先假設售完狀態
         status: status[0],
       });
-      return await res.json({
+      return res.json({
         ok: 1,
-        message: "success",
+        message: "新增商品成功～",
       });
     } catch (error) {
-      console.log(error);
-      //   req.flash("errorMessage", "錯誤，新增失敗");
-      //   return next();
+      return res.status(400).json({ ok: 0, message: err });
     }
   },
 
   updateProduct: async (req, res) => {
     const { id } = req.params;
     const { categories, name, price, status } = req.body;
-    let product;
     if (!categories || !name || !price || !status) {
-      console.log("欄位請勿留白");
+      return res.status(400).json({ ok: 0, message: "上面欄位，填好，填滿" });
     }
     try {
-      product = await Product.findOne({
+      const product = await Product.findOne({
         where: { id },
       });
       await product.update({
@@ -49,31 +43,30 @@ const productController = {
         price,
         status,
       });
-      return await res.json({
+      return res.json({
         ok: 1,
-        message: "success",
+        message: "更新商品成功～",
       });
     } catch (error) {
-      console.log(error);
+      return res.status(400).json({ ok: 0, message: err });
     }
   },
 
   deleteProduct: async (req, res) => {
     const { id } = req.params;
-    let product;
     try {
-      product = await Product.findOne({
+      const product = await Product.findOne({
         where: { id, is_deleted: false },
       });
       await product.update({
         is_deleted: true,
       });
-      return await res.json({
+      return res.json({
         ok: 1,
-        message: "success",
+        message: "刪除商品成功～",
       });
     } catch (error) {
-      console.log(error);
+      return res.status(400).json({ ok: 0, message: err });
     }
   },
 };
