@@ -34,13 +34,12 @@ const orderController = {
     }
   },
   getOrder: async (req, res) => {
-    // 用使用者 id 查詢他是否已經有購物車
     try {
       const { user_id } = await userController.getUser();
+      console.log(user_id);
       const result = await Order.findOne({
         where: { user_id },
       });
-
       if (result === null) {
         return res.json({
           ok: 1,

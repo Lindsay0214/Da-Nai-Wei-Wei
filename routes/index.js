@@ -25,7 +25,7 @@ router.delete('/products/:id');
 router.patch('/products/:id');
 
 // Order
-router.post('/orders', orderController.addShoppingCart2);
+router.post('/orders', orderController.addShoppingCart);
 router.get('/orders', orderController.getOrder);
 router.patch('/orders', orderController.updateShoppingCart);
 
