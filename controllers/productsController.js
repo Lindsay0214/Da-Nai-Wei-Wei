@@ -1,14 +1,14 @@
-const db = require("../models");
+const db = require('../models');
 const { Product } = db;
 
 const productController = {
   // 新增、編輯
   addProduct: async (req, res) => {
-    const status = ["售完", "還有很多", "剩下一點"];
+    const status = ['售完', '還有很多', '剩下一點'];
     // 根據情況不同，給店家選擇 status
     const { categories, name, price } = req.body;
     if (!categories || !name || !price || !status) {
-      return res.status(400).json({ ok: 0, message: "上面欄位，填好，填滿" });
+      return res.status(400).json({ ok: 0, message: '上面欄位，填好，填滿' });
     }
     try {
       await Product.create({
@@ -20,7 +20,7 @@ const productController = {
       });
       return res.json({
         ok: 1,
-        message: "新增商品成功～",
+        message: '新增商品成功～',
       });
     } catch (error) {
       return res.status(400).json({ ok: 0, message: err });
@@ -31,7 +31,7 @@ const productController = {
     const { id } = req.params;
     const { categories, name, price, status } = req.body;
     if (!categories || !name || !price || !status) {
-      return res.status(400).json({ ok: 0, message: "上面欄位，填好，填滿" });
+      return res.status(400).json({ ok: 0, message: '上面欄位，填好，填滿' });
     }
     try {
       const product = await Product.findOne({
@@ -45,7 +45,7 @@ const productController = {
       });
       return res.json({
         ok: 1,
-        message: "更新商品成功～",
+        message: '更新商品成功～',
       });
     } catch (error) {
       return res.status(400).json({ ok: 0, message: err });
@@ -63,7 +63,7 @@ const productController = {
       });
       return res.json({
         ok: 1,
-        message: "刪除商品成功～",
+        message: '刪除商品成功～',
       });
     } catch (error) {
       return res.status(400).json({ ok: 0, message: err });
