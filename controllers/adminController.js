@@ -1,5 +1,6 @@
-const db = require('../models');
 const bcrypt = require('bcrypt');
+const db = require('../models');
+
 const { User } = db;
 
 const saltRounds = 10;

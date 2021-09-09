@@ -1,11 +1,11 @@
 const express = require('express');
+
 const router = express.Router();
 const checkPermission = require('../middleware/checkPermission');
 
-
 const adminController = require('../controllers/adminController');
 const productController = require('../controllers/productsController');
-const userController = require('../controllers/userController')
+const userController = require('../controllers/userController');
 
 router.get('/', (req, res) => {
   res.json({
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 });
 
 function redirectBack(req, res) {
-  res.redirect('back')
+  res.redirect('back');
 }
 
 // Shop
@@ -27,7 +27,6 @@ router.delete('/shops/:id', adminController.deleteShop);
 router.get('/users/logout', userController.logout);
 router.post('/users/login', userController.login, redirectBack);
 router.post('/users/register', userController.register, redirectBack);
-
 
 // Products
 router.get('/products/:userId');

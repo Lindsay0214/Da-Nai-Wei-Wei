@@ -1,4 +1,5 @@
 const db = require('../models');
+
 const { Product } = db;
 
 const productController = {
@@ -23,7 +24,7 @@ const productController = {
         message: '新增商品成功～',
       });
     } catch (error) {
-      return res.status(400).json({ ok: 0, message: err });
+      return res.status(400).json({ ok: 0, message: error });
     }
   },
 
@@ -48,7 +49,7 @@ const productController = {
         message: '更新商品成功～',
       });
     } catch (error) {
-      return res.status(400).json({ ok: 0, message: err });
+      return res.status(400).json({ ok: 0, message: error });
     }
   },
 
@@ -66,7 +67,7 @@ const productController = {
         message: '刪除商品成功～',
       });
     } catch (error) {
-      return res.status(400).json({ ok: 0, message: err });
+      return res.status(400).json({ ok: 0, message: error });
     }
   },
 };
