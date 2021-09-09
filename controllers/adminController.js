@@ -9,7 +9,7 @@ const adminController = {
     try {
       const users = await User.findAll({
         attributes: { exclude: ['password'] },
-        where: { is_deleted: false },
+        where: { is_deleted: false, role: 'shop' },
       });
       return res.json({ ok: 1, message: 'success', users });
     } catch (err) {
@@ -18,8 +18,8 @@ const adminController = {
   },
   addShop: async (req, res) => {
     const role = 'shop';
-    const { nickname, password, email, address, brand_name, Url } = req.body;
-    if (!nickname || !password || !email || !address || !brand_name || !Url)
+    const { nickname, password, email, address, brand_name, URL } = req.body;
+    if (!nickname || !password || !email || !address || !brand_name || !URL)
       return res.status(400).json({ ok: 0, message: '上面欄位，填好，填滿' });
     bcrypt.hash(password, saltRounds, async (err, hash) => {
       if (err) return res.status(400).json({ ok: 0, message: err });
@@ -31,7 +31,7 @@ const adminController = {
           role,
           address,
           brand_name,
-          Url,
+          URL,
         });
         return res.json({ ok: 1, message: '新增店家成功～' });
       } catch (err) {
