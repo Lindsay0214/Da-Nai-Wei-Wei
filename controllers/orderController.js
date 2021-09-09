@@ -25,6 +25,26 @@ const orderController = {
       return res.status(500).json({ ok: 0, message: error });
     }
   },
+  addShoppingCart2: async (req, res) => {
+    try {
+      const { user_id } = await userController.getUser();
+      const result = await User.findOrCreate({
+        where: { id: user_id },
+        include: Order, // 在 Order 這張表格裡面，找出 user_id 吻合的全部資料
+        defaults: {
+          user_id,
+          status: '未完成',
+          item_count: 0,
+          total_price: 0,
+          is_paid: false,
+        },
+      });
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ ok: 0, message: error });
+    }
+  },
   getOrder: async (req, res) => {
     // 用使用者 id 查詢他是否已經有購物車
     try {
@@ -32,7 +52,7 @@ const orderController = {
       const result = await Order.findOne({
         where: { user_id },
       });
-      console.log(result);
+
       if (result === null) {
         return res.json({
           ok: 1,
@@ -41,7 +61,7 @@ const orderController = {
       }
       const { id, status, item_count, total_price, is_paid } =
         result.dataValues;
-      return res.json({
+      return {
         ok: 1,
         message: '找到了，有一比符合的資料',
         order_id: id, // order 這張表格裡面的 id
@@ -49,7 +69,7 @@ const orderController = {
         item_count, // order 這張表格裡面的 item_count
         total_price, // order 這張表格裡面的 total_price
         is_paid, // order 這張表格裡面的 is_paid
-      });
+      };
     } catch (error) {
       console.log(error);
       return res.json({ ok: 0, message: error });

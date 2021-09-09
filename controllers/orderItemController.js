@@ -1,5 +1,5 @@
 const db = require('../models');
-const { Order_item } = db;
+const { Order_item, Order } = db;
 const orderController = require('./orderController'); // 引入 controller 檔案
 const orderItemController = {
   addOrderItem: async (req, res) => {
@@ -50,6 +50,31 @@ const orderItemController = {
           result[i].dataValues;
         data.push({ order_id, product_id, detail_id, quantity });
       }
+      return res.json({
+        ok: 1,
+        message: '新增 order_item 成功',
+        data, // 可以看出有幾筆資料，每一筆資料包含 product_id, detail_id, quantity
+        // 如果這個 order_id 底下沒有 order_item 的話， data 會是空陣列
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ ok: 0, message: error });
+    }
+  },
+  getOrderItem2: async (req, res) => {
+    try {
+      const { order_id } = await orderController.getOrder();
+      if (!order_id) {
+        return res.status(400).json({
+          ok: 0,
+          message: 'order_id 沒有填寫',
+        });
+      }
+      const result = await Order.findOne({
+        where: { id: order_id },
+        include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
+      });
+      console.log(result.Order_items);
       return res.json({
         ok: 1,
         message: '新增 order_item 成功',

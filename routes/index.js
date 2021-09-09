@@ -25,14 +25,14 @@ router.delete('/products/:id');
 router.patch('/products/:id');
 
 // Order
-router.post('/orders', orderController.addShoppingCart);
+router.post('/orders', orderController.addShoppingCart2);
 router.get('/orders', orderController.getOrder);
 router.patch('/orders', orderController.updateShoppingCart);
 
 router.get('/orders');
 // Order_item
 router.post('/order-items', orderItemController.addOrderItem);
-router.get('/order-items', orderItemController.getOrderItem);
+router.get('/order-items', orderItemController.getOrderItem2);
 router.patch('/order-items', orderItemController.updateOrderItem);
 router.delete('/order-items', orderItemController.deleteOrderItem);
 
