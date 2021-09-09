@@ -5,41 +5,29 @@ const orderController = {
   addShoppingCart: async (req, res) => {
     try {
       const { user_id } = await userController.getUser();
-      if (!user_id) {
-        return res.status(400).json({ ok: 0, message: '沒有帶上 user_id' });
-      }
-      const result = await Order.create({
-        user_id,
-        status: '未完成',
-        item_count: 0,
-        total_price: 0,
-        is_paid: false,
-      });
-      return res.json({
-        ok: 1,
-        message: 'success',
-        order_id: result.dataValues.id, // order 這張表格裡面的 id
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ ok: 0, message: error });
-    }
-  },
-  addShoppingCart2: async (req, res) => {
-    try {
-      const { user_id } = await userController.getUser();
-      const result = await User.findOrCreate({
-        where: { id: user_id },
-        include: Order, // 在 Order 這張表格裡面，找出 user_id 吻合的全部資料
+      const result = await Order.findOrCreate({
+        where: { user_id },
         defaults: {
-          user_id,
           status: '未完成',
           item_count: 0,
           total_price: 0,
           is_paid: false,
         },
       });
-      console.log(result);
+      if (result[1]) {
+        // 有新增成功是 true , 已經存在所以沒有新增是 false
+        return res.status(200).json({
+          ok: 1,
+          message: '新的購物車建立成功',
+          order_id: result[0].dataValues.id,
+        });
+      } else {
+        return res.status(200).json({
+          ok: 1,
+          message: '此用戶已有購物車存在',
+          order_id: result[0].dataValues.id,
+        });
+      }
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });
