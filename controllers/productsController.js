@@ -35,7 +35,7 @@ const productController = {
     }
     try {
       const product = await Product.findOne({
-        where: { id },
+        where: { id, is_deleted: false },
       });
       await product.update({
         categories,
