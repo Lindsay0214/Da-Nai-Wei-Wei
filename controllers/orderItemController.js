@@ -1,15 +1,21 @@
 const db = require('../models');
 const { Order_item } = db;
+const orderController = require('./orderController'); // 引入 controller 檔案
 const orderItemController = {
   addOrderItem: async (req, res) => {
-    const { order_id, product_id, detail_id, quantity } = req.body;
-    if (!order_id || !product_id || !detail_id || !quantity) {
-      return res.status(400).json({
-        ok: 0,
-        message: '購物車編號或是商品編號或是冰糖編號或是數量沒有填寫',
-      });
-    }
     try {
+      const aa = await orderController.getOrder();
+      console.log(`aa:${aa}`);
+      if (!order_id) {
+        return res.status(400).json({ ok: 0, message: '沒有 order_id' });
+      }
+      const { product_id, detail_id, quantity } = req.body;
+      if (!product_id || !detail_id || !quantity) {
+        return res.status(400).json({
+          ok: 0,
+          message: '商品編號或是冰糖編號或是數量沒有填寫',
+        });
+      }
       await Order_item.create({
         order_id,
         product_id,
@@ -27,7 +33,7 @@ const orderItemController = {
     }
   },
   getOrderItem: async (req, res) => {
-    const { order_id } = req.body;
+    const { order_id } = await orderController.getOrder();
     if (!order_id) {
       return res.status(400).json({
         ok: 0,
@@ -44,7 +50,6 @@ const orderItemController = {
           result[i].dataValues;
         data.push({ order_id, product_id, detail_id, quantity });
       }
-      console.log(data);
       return res.json({
         ok: 1,
         message: '新增 order_item 成功',

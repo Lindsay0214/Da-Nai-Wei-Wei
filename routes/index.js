@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController'); // 引入 controller 檔案
 const orderItemController = require('../controllers/orderItemController');
-
 const adminController = require('../controllers/adminController');
 router.get('/', (req, res) => {
   res.json({
