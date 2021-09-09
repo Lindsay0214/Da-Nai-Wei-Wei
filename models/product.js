@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Product.belongsTo(models.User);
+      Product.belongsTo(models.User, { foreignKey: 'user_id' });
       Product.hasMany(models.Order_item);
     }
   }
@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: DataTypes.NUMBER,
       price: DataTypes.NUMBER,
       status: DataTypes.STRING,
+      is_deleted: DataTypes.BOOLEAN,
     },
     {
       sequelize,

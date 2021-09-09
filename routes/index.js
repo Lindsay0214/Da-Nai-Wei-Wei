@@ -2,8 +2,11 @@ const express = require('express');
 const router = express.Router();
 const checkPermission = require('../middleware/checkPermission');
 
-const adminController = require('../controllers/adminController')
+
+const adminController = require('../controllers/adminController');
+const productController = require('../controllers/productsController');
 const userController = require('../controllers/userController')
+
 router.get('/', (req, res) => {
   res.json({
     message: 'welcome',
@@ -30,9 +33,9 @@ router.post('/users/register', userController.register, redirectBack);
 
 // Products
 router.get('/products/:userId');
-router.post('/products');
-router.delete('/products/:id');
-router.patch('/products/:id');
+router.post('/products', productController.addProduct);
+router.delete('/products/:id', productController.deleteProduct);
+router.patch('/products/:id', productController.updateProduct);
 
 // Order
 router.post('/orders');
