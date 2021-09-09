@@ -1,10 +1,11 @@
 const db = require('../models');
-const { Order, User } = db;
-const userController = require('./userController'); // 引入 controller 檔案
+const { Order } = db;
+const { getUser } = require('./userController');
+const orderItemController = require('./orderItemController');
 const orderController = {
   addShoppingCart: async (req, res) => {
     try {
-      const { user_id } = await userController.getUser();
+      const { user_id } = await getUser();
       const result = await Order.findOrCreate({
         where: { user_id },
         defaults: {
@@ -35,8 +36,7 @@ const orderController = {
   },
   getOrder: async (req, res) => {
     try {
-      const { user_id } = await userController.getUser();
-      console.log(user_id);
+      const { user_id } = await getUser();
       const result = await Order.findOne({
         where: { user_id },
       });
@@ -48,7 +48,7 @@ const orderController = {
       }
       const { id, status, item_count, total_price, is_paid } =
         result.dataValues;
-      return {
+      return res.json({
         ok: 1,
         message: '找到了，有一比符合的資料',
         order_id: id, // order 這張表格裡面的 id
@@ -56,15 +56,19 @@ const orderController = {
         item_count, // order 這張表格裡面的 item_count
         total_price, // order 這張表格裡面的 total_price
         is_paid, // order 這張表格裡面的 is_paid
-      };
+      });
     } catch (error) {
       console.log(error);
       return res.json({ ok: 0, message: error });
     }
   },
   updateShoppingCart: async (req, res) => {
+    const aa = await orderItemController.getOrderItemObjectType();
+    console.log(aa);
     try {
-      const { user_id } = await userController.getUser();
+      const { user_id } = await getUser();
+      const aa = await getOrderItemObjectType();
+      console.log(JSON.stringify(aa));
       const { item_count, total_price, is_paid } = req.body;
       if (!item_count || !total_price || !is_paid) {
         return res.status(400).json({ ok: 0, message: '資料不齊全' });
@@ -87,6 +91,30 @@ const orderController = {
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });
+    }
+  },
+  getOrderId: async (req, res) => {
+    try {
+      const { user_id } = await getUser();
+      console.log(user_id, 666);
+      const result = await Order.findOne({
+        where: { user_id },
+      });
+      if (result === null) {
+        return {
+          ok: 1,
+          message: '這個 user_id 還沒有購物車',
+        };
+      }
+      const { id } = result.dataValues;
+      return {
+        ok: 1,
+        message: '找到了，有一比符合的資料',
+        order_id: id, // order 這張表格裡面的 id
+      };
+    } catch (error) {
+      console.log(error);
+      return res.json({ ok: 0, message: error });
     }
   },
 };

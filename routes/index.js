@@ -32,7 +32,7 @@ router.patch('/orders', orderController.updateShoppingCart);
 router.get('/orders');
 // Order_item
 router.post('/order-items', orderItemController.addOrderItem);
-router.get('/order-items', orderItemController.getOrderItem2);
+router.get('/order-items', orderItemController.gg);
 router.patch('/order-items', orderItemController.updateOrderItem);
 router.delete('/order-items', orderItemController.deleteOrderItem);
 

@@ -5,7 +5,7 @@ const userController = {
     // 用 email 拿 user_id
     try {
       // const { email } = req.session;
-      const email = '666@gmail.com'; // 測試用
+      const email = '123@gmail.com'; // 測試用
       if (!email) {
         return res.status(400).json({ ok: 0, message: '沒有帶上 email' });
       }
