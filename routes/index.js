@@ -17,19 +17,17 @@ function redirectBack(req, res) {
   res.redirect('back')
 }
 
+// Shop
+router.get('/shops', adminController.getAllShops);
+router.post('/shops', adminController.addShop);
+router.patch('/shops/:id', adminController.updateShop);
+router.delete('/shops/:id', adminController.deleteShop);
+
 // User
 router.get('/users/logout', userController.logout);
 router.post('/users/login', userController.login, redirectBack);
 router.post('/users/register', userController.register, redirectBack);
-// router.get('/users/:id', userController.getMyInfo);
-// router.patch('/users/:id', userController.updateMyInfo);
 
-// Shop
-// router.get('/shops/:nickname');
-// router.post('/shops', adminController.addShop);
-// router.post('/shops', adminController.addShop);
-// router.patch('/shops/:id', adminController.updateShop);
-// router.delete('/shops/:id', adminController.deleteShop);
 
 // Products
 router.get('/products/:userId');
