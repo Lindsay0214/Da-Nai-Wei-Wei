@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const checkPermission = require('../middleware/checkPermission');
 
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
@@ -14,18 +15,18 @@ function redirectBack(req, res) {
 }
 
 // User
-router.get('/logout', userController.logout);
-router.post('/login', userController.login, redirectBack);
-router.post('/register', userController.register, redirectBack);
+router.get('/users/logout', userController.logout);
+router.post('/users/login', userController.login, redirectBack);
+router.post('/users/register', userController.register, redirectBack);
+// router.get('/users/:id', userController.getMyInfo);
+// router.patch('/users/:id', userController.updateMyInfo);
 
-router.get('/users/:id');
-router.get('/users/:nickname');
-router.get('/users/register', userController.register);
-router.post('/users/login', userController.login);
-
-router.post('/users', adminController.addUser);
-router.patch('/users/:id', adminController.updateUser);
-router.delete('/users/:id', adminController.deleteUser);
+// Shop
+// router.get('/shops/:nickname');
+// router.post('/shops', adminController.addShop);
+// router.post('/shops', adminController.addShop);
+// router.patch('/shops/:id', adminController.updateShop);
+// router.delete('/shops/:id', adminController.deleteShop);
 
 // Products
 router.get('/products/:userId');
