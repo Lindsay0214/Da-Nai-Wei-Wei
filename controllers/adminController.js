@@ -24,8 +24,7 @@ const adminController = {
   },
   updateUser: async (req, res) => {
     const { id } = req.params;
-    const { nickname, password, email, role, address, brand_name, Url } =
-      req.body;
+    const { nickname, password, email, role, address, brand_name, Url } = req.body;
     try {
       const user = await User.findOne({
         where: { id },
@@ -37,13 +36,13 @@ const adminController = {
         role,
         address,
         brand_name,
-        Url
+        Url,
       });
       return await res.json({
         message: 'success',
       });
     } catch (error) {
-      console.log(456)
+      console.log(456);
     }
   },
   deleteUser: async (req, res) => {
@@ -53,13 +52,13 @@ const adminController = {
         where: { id },
       });
       await user.update({
-        is_delete: true
+        is_delete: true,
       });
       return await res.json({
         message: 'success',
       });
     } catch (error) {
-      console.log(456)
+      console.log(456);
     }
   },
 };
