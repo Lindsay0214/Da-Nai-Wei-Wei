@@ -27,6 +27,9 @@ router.delete('/shops/:id', adminController.deleteShop);
 router.get('/users/logout', userController.logout);
 router.post('/users/login', userController.login, redirectBack);
 router.post('/users/register', userController.register, redirectBack);
+router.get('/users', userController.getAllInfo);
+router.get('/users/:id', userController.getMyInfo)
+router.patch('/users/:id', userController.updateMyInfo)
 
 
 // Products
