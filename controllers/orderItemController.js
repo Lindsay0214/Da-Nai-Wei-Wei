@@ -13,11 +13,7 @@ const orderItemController = {
           message: '使用者 email 錯誤',
         });
       }
-      // user_id:3
       const { id: order_id } = await Order.findOne({ where: { user_id } });
-      console.log(order_id);
-      const aa = await Order.findOne({ where: user_id });
-      console.log(aa);
       const { product_id, detail_id, quantity } = req.body;
       if (!product_id || !detail_id || !quantity) {
         return res.status(400).json({
@@ -128,7 +124,6 @@ const orderItemController = {
         include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
       });
       const data = result.Order_items;
-      console.log(data);
       return {
         ok: 1,
         message: '查詢成功',

@@ -65,8 +65,6 @@ const orderController = {
   updateShoppingCart: async (req, res) => {
     try {
       const orderItemData = await getOrderItemObject();
-      console.log(JSON.stringify(orderItemData));
-      console.log(`orderItemData.data:${orderItemData}`);
       let item_count = 0;
       let total_price = 0;
       for (let i = 0; i < orderItemData.data.length; i++) {
