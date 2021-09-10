@@ -2,6 +2,7 @@ const db = require('../models');
 const { Order } = db;
 const { getUser } = require('./userController');
 const orderItemController = require('./orderItemController');
+const { getOrderItem } = require('./orderItemController');
 const orderController = {
   addShoppingCart: async (req, res) => {
     try {
@@ -63,21 +64,20 @@ const orderController = {
     }
   },
   updateShoppingCart: async (req, res) => {
-    const aa = await orderItemController.getOrderItemObjectType();
-    console.log(aa);
+    const orderItemData = await getOrderItem();
+
+    let item_count = 0;
+    let total_price = 0;
+    for (i = 0; i < orderItemData.data.length; i++) {
+      console.log(orderItemData.data[i].product_id);
+      item_count += orderItemData.data[i].quantity;
+    }
     try {
       const { user_id } = await getUser();
-      const aa = await getOrderItemObjectType();
-      console.log(JSON.stringify(aa));
-      const { item_count, total_price, is_paid } = req.body;
-      if (!item_count || !total_price || !is_paid) {
-        return res.status(400).json({ ok: 0, message: '資料不齊全' });
-      }
+
       const result = await Order.update(
         {
           item_count,
-          total_price,
-          is_paid,
         },
         { where: { user_id } }
       );

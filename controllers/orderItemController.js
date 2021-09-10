@@ -1,25 +1,19 @@
 const db = require('../models');
 const { getOrderId } = require('./orderController');
+const { getUser } = require('./userController');
+
 const { Order_item, Order } = db;
 const orderItemController = {
-  gg: async (req, res) => {
-    try {
-      const aa = await getOrderId();
-      console.log(aa);
-    } catch (error) {
-      console.log(error);
-      return res.json(123);
-    }
-  },
   addOrderItem: async (req, res) => {
     try {
-      const { ok, order_id } = await orderController.getOrderId();
-      if (ok === 0) {
-        return res.status(200).json({
+      const { ok: userOk, user_id } = await getUser(); // 解構同時重新命名
+      if (userOk !== 1) {
+        return res.status(400).json({
           ok: 0,
-          message: '某個地方出錯了',
+          message: '使用者 email 錯誤',
         });
       }
+      const { id: order_id } = await Order.findOne({ where: user_id });
       const { product_id, detail_id, quantity } = req.body;
       if (!product_id || !detail_id || !quantity) {
         return res.status(400).json({
@@ -27,17 +21,27 @@ const orderItemController = {
           message: '商品編號或是冰糖編號或是數量沒有填寫',
         });
       }
-      await Order_item.create({
-        order_id,
-        product_id,
-        history_id: 0, // 用 null sql 語句會說不能是 null
-        detail_id,
-        quantity,
+      const result = await Order_item.findOrCreate({
+        where: { order_id, product_id },
+        defaults: {
+          history_id: 0, // 用 null sql 語句會說不能是 null
+          detail_id,
+          quantity,
+        },
       });
-      return res.json({
-        ok: 1,
-        message: '新增 order_item 成功',
-      });
+      console.log(result);
+      if (result[1]) {
+        // 有新增成功是 true , 已經存在所以沒有新增是 false
+        return res.status(200).json({
+          ok: 1,
+          message: '新的物品已加入購物車',
+        });
+      } else {
+        return res.status(200).json({
+          ok: 1,
+          message: '此物品已存在購物車裡面',
+        });
+      }
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });
@@ -45,23 +49,24 @@ const orderItemController = {
   },
   getOrderItem: async (req, res) => {
     try {
-      const { ok, order_id } = await orderController.getOrderId();
-      if (ok === 0) {
-        return res.status(200).json({
+      const { ok: userOk, user_id } = await getUser(); // 解構同時重新命名
+      if (userOk !== 1) {
+        return res.status(400).json({
           ok: 0,
-          message: '某個地方出錯了',
+          message: '使用者 email 錯誤',
         });
       }
+      const { id: order_id } = await Order.findOne({ where: user_id });
       const result = await Order.findOne({
         where: { id: order_id },
         include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
       });
       const data = result.Order_items;
-      return res.json({
+      return {
         ok: 1,
         message: '查詢成功',
         data,
-      });
+      };
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });
@@ -103,30 +108,6 @@ const orderItemController = {
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });
-    }
-  },
-  getOrderItemObjectType: async (req, res) => {
-    try {
-      const { ok, order_id } = await orderController.getOrderId();
-      if (ok === 0) {
-        return {
-          ok: 0,
-          message: '某個地方出錯了',
-        };
-      }
-      const result = await Order.findOne({
-        where: { id: order_id },
-        include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
-      });
-      const data = result.Order_items;
-      return {
-        ok: 1,
-        message: '查詢成功',
-        data,
-      };
-    } catch (error) {
-      console.log(error);
-      return { ok: 0, message: error };
     }
   },
 };

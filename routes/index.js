@@ -3,6 +3,8 @@ const router = express.Router();
 const orderController = require('../controllers/orderController'); // 引入 controller 檔案
 const orderItemController = require('../controllers/orderItemController');
 const adminController = require('../controllers/adminController');
+const productController = require('../controllers/productController');
+
 router.get('/', (req, res) => {
   res.json({
     message: 'welcome',
@@ -20,7 +22,7 @@ router.delete('/users/:id', adminController.deleteUser);
 
 // Products
 router.get('/products/:userId');
-router.post('/products');
+router.post('/products', productController.addProduct);
 router.delete('/products/:id');
 router.patch('/products/:id');
 
@@ -32,7 +34,7 @@ router.patch('/orders', orderController.updateShoppingCart);
 router.get('/orders');
 // Order_item
 router.post('/order-items', orderItemController.addOrderItem);
-router.get('/order-items', orderItemController.gg);
+router.get('/order-items', orderItemController.getOrderItem);
 router.patch('/order-items', orderItemController.updateOrderItem);
 router.delete('/order-items', orderItemController.deleteOrderItem);
 
