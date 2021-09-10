@@ -29,7 +29,6 @@ const orderItemController = {
           quantity,
         },
       });
-      console.log(result);
       if (result[1]) {
         // 有新增成功是 true , 已經存在所以沒有新增是 false
         return res.status(200).json({
@@ -62,14 +61,14 @@ const orderItemController = {
         include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
       });
       const data = result.Order_items;
-      return {
+      return res.json({
         ok: 1,
         message: '查詢成功',
         data,
-      };
+      });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ ok: 0, message: error });
+      return res.json({ ok: 0, message: error });
     }
   },
   updateOrderItem: async (req, res) => {
@@ -108,6 +107,32 @@ const orderItemController = {
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });
+    }
+  },
+  getOrderItemObject: async (req, res) => {
+    try {
+      const { ok: userOk, user_id } = await getUser(); // 解構同時重新命名
+      if (userOk !== 1) {
+        return res.status(400).json({
+          ok: 0,
+          message: '使用者 email 錯誤',
+        });
+      }
+      const { id: order_id } = await Order.findOne({ where: user_id });
+      const result = await Order.findOne({
+        where: { id: order_id },
+        include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
+      });
+      const data = result.Order_items;
+      console.log(data);
+      return {
+        ok: 1,
+        message: '查詢成功',
+        data,
+      };
+    } catch (error) {
+      console.log(error);
+      return { ok: 0, message: error };
     }
   },
 };

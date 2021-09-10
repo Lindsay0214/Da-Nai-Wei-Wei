@@ -6,7 +6,6 @@ const orderItemController = require('../controllers/orderItemController');
 const adminController = require('../controllers/adminController');
 const productController = require('../controllers/productController');
 const checkPermission = require('../middleware/checkPermission');
-const adminController = require('../controllers/adminController');
 const userController = require('../controllers/userController');
 
 router.get('/', (req, res) => {
@@ -40,8 +39,8 @@ router.patch('/products/:id', productController.updateProduct);
 router.post('/orders', orderController.addShoppingCart);
 router.get('/orders', orderController.getOrder);
 router.patch('/orders', orderController.updateShoppingCart);
+router.delete('/orders', orderController.deleteShoppingCart);
 
-router.get('/orders');
 // Order_item
 router.post('/order-items', orderItemController.addOrderItem);
 router.get('/order-items', orderItemController.getOrderItem);

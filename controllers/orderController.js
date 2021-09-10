@@ -2,7 +2,7 @@ const db = require('../models');
 const { Order, Product } = db;
 const { getUser } = require('./userController');
 const orderItemController = require('./orderItemController');
-const { getOrderItem } = require('./orderItemController');
+const { getOrderItemObject } = require('./orderItemController');
 const orderController = {
   addShoppingCart: async (req, res) => {
     try {
@@ -63,30 +63,38 @@ const orderController = {
     }
   },
   updateShoppingCart: async (req, res) => {
-    const orderItemData = await getOrderItem();
-
-    let item_count = 0;
-    let total_price = 0;
-    for (i = 0; i < orderItemData.data.length; i++) {
-      // console.log(orderItemData.data[i].product_id);
-      const productData = Product.findOne({ where: product_id });
-      console.log(productData);
-      item_count += orderItemData.data[i].quantity;
-    }
     try {
+      const orderItemData = await getOrderItemObject();
+      console.log(JSON.stringify(orderItemData));
+      console.log(`orderItemData.data:${orderItemData}`);
+      let item_count = 0;
+      let total_price = 0;
+      for (let i = 0; i < orderItemData.data.length; i++) {
+        const { product_id } = orderItemData.data[i];
+        const productData = await Product.findOne({ where: product_id });
+        total_price += productData.price * orderItemData.data[i].quantity;
+        item_count += orderItemData.data[i].quantity;
+      }
       const { user_id } = await getUser();
-
       const result = await Order.update(
         {
           item_count,
+          total_price,
         },
         { where: { user_id } }
       );
       if (result[0] === 1) {
         return res.json({
           ok: 1,
-          message: 'success',
-          // order_id: result.dataValues.id, // order 這張表格裡面的 id
+          message: '更新購物車成功',
+          item_count,
+          total_price,
+        });
+      }
+      if (result[0] !== 1) {
+        return res.json({
+          ok: 1,
+          message: '更新購物車失敗',
         });
       }
     } catch (error) {
@@ -94,25 +102,17 @@ const orderController = {
       return res.status(500).json({ ok: 0, message: error });
     }
   },
-  getOrderId: async (req, res) => {
+  deleteShoppingCart: async (req, res) => {
     try {
       const { user_id } = await getUser();
-      console.log(user_id, 666);
-      const result = await Order.findOne({
-        where: { user_id },
-      });
-      if (result === null) {
-        return {
-          ok: 1,
-          message: '這個 user_id 還沒有購物車',
-        };
+      if (!user_id) {
+        return res.json({ ok: 0, message: '' });
       }
-      const { id } = result.dataValues;
-      return {
+      await Order.destroy({ where: { user_id } });
+      return await res.json({
         ok: 1,
-        message: '找到了，有一比符合的資料',
-        order_id: id, // order 這張表格裡面的 id
-      };
+        message: '刪除成功',
+      });
     } catch (error) {
       console.log(error);
       return res.json({ ok: 0, message: error });
