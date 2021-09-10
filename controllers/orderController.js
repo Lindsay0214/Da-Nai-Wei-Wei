@@ -1,5 +1,5 @@
 const db = require('../models');
-const { Order } = db;
+const { Order, Product } = db;
 const { getUser } = require('./userController');
 const orderItemController = require('./orderItemController');
 const { getOrderItem } = require('./orderItemController');
@@ -47,8 +47,7 @@ const orderController = {
           message: '這個 user_id 還沒有購物車',
         });
       }
-      const { id, status, item_count, total_price, is_paid } =
-        result.dataValues;
+      const { id, status, item_count, total_price, is_paid } = result.dataValues;
       return res.json({
         ok: 1,
         message: '找到了，有一比符合的資料',
@@ -69,7 +68,9 @@ const orderController = {
     let item_count = 0;
     let total_price = 0;
     for (i = 0; i < orderItemData.data.length; i++) {
-      console.log(orderItemData.data[i].product_id);
+      // console.log(orderItemData.data[i].product_id);
+      const productData = Product.findOne({ where: product_id });
+      console.log(productData);
       item_count += orderItemData.data[i].quantity;
     }
     try {
