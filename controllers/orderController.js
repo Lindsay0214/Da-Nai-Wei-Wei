@@ -6,7 +6,9 @@ const { getOrderItemObject } = require('./orderItemController');
 const orderController = {
   addShoppingCart: async (req, res) => {
     try {
-      const { user_id } = await getUser();
+      // const { user_id } = await getUser();
+      const user_id = req.session.userId;
+      console.log(user_id);
       const result = await Order.findOrCreate({
         where: { user_id },
         defaults: {
@@ -37,7 +39,7 @@ const orderController = {
   },
   getOrder: async (req, res) => {
     try {
-      const { user_id } = await getUser();
+      const user_id = req.session.userId;
       const result = await Order.findOne({
         where: { user_id },
       });
@@ -102,7 +104,7 @@ const orderController = {
   },
   deleteShoppingCart: async (req, res) => {
     try {
-      const { user_id } = await getUser();
+      const user_id = req.session.userId;
       if (!user_id) {
         return res.json({ ok: 0, message: '' });
       }

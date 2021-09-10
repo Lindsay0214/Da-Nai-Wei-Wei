@@ -6,13 +6,7 @@ const { Order_item, Order } = db;
 const orderItemController = {
   addOrderItem: async (req, res) => {
     try {
-      const { ok: userOk, user_id } = await getUser(); // 解構同時重新命名
-      if (userOk !== 1) {
-        return res.status(400).json({
-          ok: 0,
-          message: '使用者 email 錯誤',
-        });
-      }
+      const user_id = req.session.userId;
       const { id: order_id } = await Order.findOne({ where: { user_id } });
       const { product_id, detail_id, quantity } = req.body;
       if (!product_id || !detail_id || !quantity) {
@@ -48,13 +42,7 @@ const orderItemController = {
   },
   getOrderItem: async (req, res) => {
     try {
-      const { ok: userOk, user_id } = await getUser(); // 解構同時重新命名
-      if (userOk !== 1) {
-        return res.status(400).json({
-          ok: 0,
-          message: '使用者 email 錯誤',
-        });
-      }
+      const user_id = req.session.userId;
       const { id: order_id } = await Order.findOne({ where: user_id });
       const result = await Order.findOne({
         where: { id: order_id },
@@ -111,13 +99,7 @@ const orderItemController = {
   },
   getOrderItemObject: async (req, res) => {
     try {
-      const { ok: userOk, user_id } = await getUser(); // 解構同時重新命名
-      if (userOk !== 1) {
-        return res.status(400).json({
-          ok: 0,
-          message: '使用者 email 錯誤',
-        });
-      }
+      const user_id = req.session.userId;
       const { id: order_id } = await Order.findOne({ where: { user_id } });
       const result = await Order.findOne({
         where: { id: order_id },
