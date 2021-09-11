@@ -20,7 +20,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.locals.email = req.session.email;
+  res.locals.userId = req.session.userId;
   res.locals.role = req.session.role;
   next();
 });
