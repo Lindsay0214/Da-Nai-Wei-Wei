@@ -43,7 +43,7 @@ const orderItemController = {
   getOrderItem: async (req, res) => {
     try {
       const user_id = req.session.userId;
-      const { id: order_id } = await Order.findOne({ where: user_id });
+      const { id: order_id } = await Order.findOne({ where: { user_id } });
       const result = await Order.findOne({
         where: { id: order_id },
         include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
@@ -95,25 +95,6 @@ const orderItemController = {
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });
-    }
-  },
-  getOrderItemObject: async (req, res) => {
-    try {
-      const user_id = req.session.userId;
-      const { id: order_id } = await Order.findOne({ where: { user_id } });
-      const result = await Order.findOne({
-        where: { id: order_id },
-        include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
-      });
-      const data = result.Order_items;
-      return {
-        ok: 1,
-        message: '查詢成功',
-        data,
-      };
-    } catch (error) {
-      console.log(error);
-      return { ok: 0, message: error };
     }
   },
 };
