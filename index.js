@@ -22,6 +22,7 @@ app.use(
 app.use((req, res, next) => {
   res.locals.email = req.session.email;
   res.locals.role = req.session.role;
+  res.locals.userId = req.session.userId;
   next();
 });
 
