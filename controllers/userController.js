@@ -9,7 +9,6 @@ const userController = {
   register: async (req, res) => {
     const role = 'consumer';
     const { nickname, password, email } = req.body;
-
     // 空值檢查
     if (!email || !nickname || !password || !email.trim() || !nickname.trim() || !password.trim())
       res.json({ ok: 0, message: '上面欄位，填好，填滿' });
@@ -62,7 +61,7 @@ const userController = {
   getAllInfo: async (req, res) => {
     try {
       const users = await User.findAll({
-        where: { is_deleted: false },
+        where: { is_deleted: false }
       });
       return res.json({ ok: 1, message: 'success', users });
     } catch (err) {
@@ -107,8 +106,7 @@ const userController = {
     if (email && email.search(emailRegEx) == -1) {
       return res.status(400).json({ ok: 0, message: '信箱格式有誤，請再次確認！' });
     }
-    const addressRegEx =
-      /(?<city>\D+[縣市])(?<district>\D+?(市區|鎮區|鎮市|[鄉鎮市區]))(?<others>.+)/g;
+    const addressRegEx = /(?<city>\D+[縣市])(?<district>\D+?(市區|鎮區|鎮市|[鄉鎮市區]))(?<others>.+)/g;
     if (address && address.search(addressRegEx) == -1) {
       return res.status(400).json({ ok: 0, message: '地址格式有誤，請再次確認！' });
     }
@@ -119,7 +117,7 @@ const userController = {
         nickname,
         email,
         address,
-        creditcard,
+        creditcard
       });
       return res.json({ ok: 1, message: '個人資料修改成功囉！' });
     } catch (err) {
@@ -127,7 +125,7 @@ const userController = {
     }
   },
 
-    getUser: async (req, res) => {
+  getUser: async (req, res) => {
     // 用 email 拿 user_id
     try {
       // const { email } = req.session;
@@ -149,7 +147,6 @@ const userController = {
       return res.status(500).json({ ok: 0, message: error });
     }
   }
-    
 };
 
 module.exports = userController;

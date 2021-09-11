@@ -1,14 +1,11 @@
 const db = require('../models');
 
-const { Order, Product } = db;
-const { getUser } = require('./userController');
-const orderItemController = require('./orderItemController');
-const { getOrderItemObject } = require('./orderItemController');
+const { Order, Product, Order_item } = db;
 
 const orderController = {
   addShoppingCart: async (req, res) => {
     try {
-      const { user_id } = await getUser();
+      const user_id = req.session.userId;
       const result = await Order.findOrCreate({
         where: { user_id },
         defaults: {
@@ -39,7 +36,7 @@ const orderController = {
   },
   getOrder: async (req, res) => {
     try {
-      const { user_id } = await getUser();
+      const user_id = req.session.userId;
       const result = await Order.findOne({
         where: { user_id },
       });
@@ -66,16 +63,21 @@ const orderController = {
   },
   updateShoppingCart: async (req, res) => {
     try {
-      const orderItemData = await getOrderItemObject();
+      const user_id = req.session.userId;
+      const { id: order_id } = await Order.findOne({ where: { user_id } });
+      const orderResult = await Order.findOne({
+        where: { id: order_id },
+        include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
+      });
+      const orderItemData = orderResult.Order_items;
       let item_count = 0;
       let total_price = 0;
-      for (let i = 0; i < orderItemData.data.length; i++) {
-        const { product_id } = orderItemData.data[i];
-        const productData = await Product.findOne({ where: product_id });
-        total_price += productData.price * orderItemData.data[i].quantity;
-        item_count += orderItemData.data[i].quantity;
+      for (let i = 0; i < orderItemData.length; i++) {
+        const { product_id } = orderItemData[i];
+        const productData = await Product.findByPk(product_id);
+        total_price += productData.price * orderItemData[i].quantity;
+        item_count += orderItemData[i].quantity;
       }
-      const { user_id } = await getUser();
       const result = await Order.update(
         {
           item_count,
@@ -104,7 +106,7 @@ const orderController = {
   },
   deleteShoppingCart: async (req, res) => {
     try {
-      const { user_id } = await getUser();
+      const user_id = req.session.userId;
       if (!user_id) {
         return res.json({ ok: 0, message: '' });
       }
