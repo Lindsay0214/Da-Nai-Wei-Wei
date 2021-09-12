@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('Order_items', 'histroy_id');
@@ -10,5 +8,5 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Order_items');
-  }
+  },
 };

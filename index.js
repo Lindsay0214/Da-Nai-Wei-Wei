@@ -20,7 +20,6 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.locals.userId = req.session.userId;
   res.locals.role = req.session.role;
   res.locals.userId = req.session.userId;
   next();

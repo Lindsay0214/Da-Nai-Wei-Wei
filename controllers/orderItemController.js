@@ -1,6 +1,4 @@
 const db = require('../models');
-const { getOrderId } = require('./orderController');
-const { getUser } = require('./userController');
 
 const { Order_item, Order } = db;
 const orderItemController = {
@@ -29,12 +27,11 @@ const orderItemController = {
           ok: 1,
           message: '新的物品已加入購物車',
         });
-      } else {
-        return res.status(200).json({
-          ok: 1,
-          message: '此物品已存在購物車裡面',
-        });
       }
+      return res.status(200).json({
+        ok: 1,
+        message: '此物品已存在購物車裡面',
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });

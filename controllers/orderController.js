@@ -6,6 +6,7 @@ const orderController = {
   addShoppingCart: async (req, res) => {
     try {
       const user_id = req.session.userId;
+      console.log(user_id);
       const result = await Order.findOrCreate({
         where: { user_id },
         defaults: {
@@ -22,13 +23,12 @@ const orderController = {
           message: '新的購物車建立成功',
           order_id: result[0].dataValues.id,
         });
-      } else {
-        return res.status(200).json({
-          ok: 1,
-          message: '此用戶已有購物車存在',
-          order_id: result[0].dataValues.id,
-        });
       }
+      return res.status(200).json({
+        ok: 1,
+        message: '此用戶已有購物車存在',
+        order_id: result[0].dataValues.id,
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ ok: 0, message: error });
@@ -64,16 +64,18 @@ const orderController = {
   updateShoppingCart: async (req, res) => {
     try {
       const user_id = req.session.userId;
-      const { id: order_id } = await Order.findOne({ where: { user_id } });
+      // const { id: order_id } = await Order.findOne({ where: { user_id } });
       const orderResult = await Order.findOne({
-        where: { id: order_id },
+        where: { user_id },
         include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
       });
       const orderItemData = orderResult.Order_items;
+      console.log(orderItemData[1].product_id);
       let item_count = 0;
       let total_price = 0;
-      for (let i = 0; i < orderItemData.length; i++) {
+      for (let i = 0; i < orderItemData.length; i += 1) {
         const { product_id } = orderItemData[i];
+        // eslint-disable-next-line no-await-in-loop
         const productData = await Product.findByPk(product_id);
         total_price += productData.price * orderItemData[i].quantity;
         item_count += orderItemData[i].quantity;
@@ -110,6 +112,7 @@ const orderController = {
       if (!user_id) {
         return res.json({ ok: 0, message: '' });
       }
+      // 這邊只有刪除 Order 沒有把 order-items 刪掉，之後看需不需要
       await Order.destroy({ where: { user_id } });
       return await res.json({
         ok: 1,

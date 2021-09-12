@@ -13,8 +13,8 @@ const adminController = {
         where: { is_deleted: false, role: 'shop' },
       });
       return res.json({ ok: 1, message: 'success', users });
-    } catch (err) {
-      return res.status(400).json({ ok: 0, message: err });
+    } catch (error) {
+      return res.status(400).json({ ok: 0, message: error });
     }
   },
   addShop: async (req, res) => {
@@ -35,8 +35,8 @@ const adminController = {
           URL,
         });
         return res.json({ ok: 1, message: '新增店家成功～' });
-      } catch (err) {
-        return res.status(400).json({ ok: 0, message: err });
+      } catch (error) {
+        return res.status(400).json({ ok: 0, message: error });
       }
     });
   },
@@ -55,8 +55,8 @@ const adminController = {
         URL,
       });
       return res.json({ ok: 1, message: '修改店家成功～' });
-    } catch (err) {
-      return res.status(400).json({ ok: 0, message: err });
+    } catch (error) {
+      return res.status(400).json({ ok: 0, message: error });
     }
   },
   deleteShop: async (req, res) => {
@@ -67,8 +67,8 @@ const adminController = {
         is_deleted: true,
       });
       return res.json({ ok: 1, message: '刪除店家成功～' });
-    } catch (err) {
-      return res.status(400).json({ ok: 0, message: err });
+    } catch (error) {
+      return res.status(400).json({ ok: 0, message: error });
     }
   },
 };
