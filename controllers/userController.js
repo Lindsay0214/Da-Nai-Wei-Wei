@@ -1,6 +1,6 @@
+const bcrypt = require('bcrypt');
 const db = require('../models');
 
-const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const { User } = db;
@@ -12,6 +12,14 @@ const userController = {
     // 空值檢查
     if (!email || !nickname || !password || !email.trim() || !nickname.trim() || !password.trim())
       res.json({ ok: 0, message: '上面欄位，填好，填滿' });
+    const passwordRegEx = /^(?=.*[0-9!@#$%^&*])(?=.*[a-zA-Z]).{8,16}$/;
+    if (password && password.search(passwordRegEx) === -1) {
+      return res.status(400).json({ ok: 0, message: '密碼格式有誤，請再次確認！' });
+    }
+    const emailRegEx = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+    if (email && email.search(emailRegEx) === -1) {
+      return res.status(400).json({ ok: 0, message: '信箱格式有誤，請再次確認！' });
+    }
     try {
       const user = await User.findOne({ where: { email } });
       // 重複帳號檢查
@@ -19,16 +27,16 @@ const userController = {
       // hash
       bcrypt.hash(password, saltRounds, async (err, hash) => {
         if (err) return res.json({ ok: 0, message: err });
-        await User.create({ email, nickname, password: hash });
+        await User.create({ email, nickname, password: hash, role });
         res.json({ ok: 1, email });
       });
-    } catch (err) {
-      console.log('唉唷！遇到了一些狀況呢...', err);
+    } catch (error) {
+      console.log('唉唷！遇到了一些狀況呢...', error);
       res.status(400).json({ ok: 0, message: '失敗' });
     }
   },
 
-  login: async (req, res, next) => {
+  login: async (req, res) => {
     const { email, password } = req.body;
     // 空值檢查
     if (!email || !password || !email.trim() || !password.trim())
@@ -41,10 +49,11 @@ const userController = {
       bcrypt.compare(password, user.password, async (err, isSuccess) => {
         if (err || !isSuccess) return res.json({ ok: 0, message: '再檢查一下，有地方填錯囉！' });
         req.session.userId = user.id;
+        req.session.role = user.role;
         res.json({ ok: 1, id: user.id });
       });
-    } catch (err) {
-      console.log('唉唷！遇到了一些狀況呢...', err);
+    } catch (error) {
+      console.log('唉唷！遇到了一些狀況呢...', error);
       return res.status(400).json({ ok: 0, message: '失敗' });
     }
   },
@@ -57,92 +66,67 @@ const userController = {
   getAllInfo: async (req, res) => {
     try {
       const users = await User.findAll({
-        where: { is_deleted: false }
+        where: { is_deleted: false },
       });
       return res.json({ ok: 1, message: 'success', users });
-    } catch (err) {
-      return res.status(400).json({ ok: 0, message: err });
+    } catch (error) {
+      return res.status(400).json({ ok: 0, message: error });
     }
   },
 
   getMyInfo: async (req, res) => {
-    console.log('-------------- getInfo start --------------');
-    const { id } = req.params; // get user id
+    const { userId } = req.session; // get user id
     try {
-      const user = await User.findByPk(id);
-      console.log('-------------- getInfo OK : userId --------------');
+      const user = await User.findByPk(userId);
       return res.status(200).json({ ok: 1, data: user });
-    } catch (err) {
-      console.log('唉唷！遇到了一些狀況呢...', err);
+    } catch (error) {
+      console.log('唉唷！遇到了一些狀況呢...', error);
       res.status(400).json({ ok: 0, message: '失敗' });
     }
   },
 
   updateMyInfo: async (req, res) => {
-    const { id } = req.params; // get user id
-    const { nickname, email, address, creditcard } = req.body;
-
+    const { userId } = req.session; // get user id
+    const { nickname, email, address, creditCard } = req.body;
     if (
       !nickname ||
       !email ||
       !address ||
-      !creditcard ||
+      !creditCard ||
       !nickname.trim() ||
       !email.trim() ||
       !address.trim() ||
-      !creditcard.trim()
+      !creditCard.trim()
     )
       return res.status(400).json({ ok: 0, message: '上面欄位，填好，填滿' });
 
-    const creditcardRegEx = /\d{4}-?\d{4}-?\d{4}-?\d{4}/g; // 先用最基本的
-    if (creditcard && creditcard.search(creditcardRegEx) == -1) {
+    const creditCardRegEx = /\d{4}-?\d{4}-?\d{4}-?\d{4}/g; // 先用最基本的
+    if (creditCard && creditCard.search(creditCardRegEx) === -1) {
       return res.status(400).json({ ok: 0, message: '信用卡資訊有誤，請再次確認！' });
     }
-    const emailRegEx = /^([\w]+)(.[\w]+)*@([\w]+)(.[\w]{2,3}){1,2}$/g;
-    if (email && email.search(emailRegEx) == -1) {
+    const emailRegEx = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+    if (email && email.search(emailRegEx) === -1) {
       return res.status(400).json({ ok: 0, message: '信箱格式有誤，請再次確認！' });
     }
-    const addressRegEx = /(?<city>\D+[縣市])(?<district>\D+?(市區|鎮區|鎮市|[鄉鎮市區]))(?<others>.+)/g;
-    if (address && address.search(addressRegEx) == -1) {
+    const addressRegEx =
+      /(?<city>\D+[縣市])(?<district>\D+?(市區|鎮區|鎮市|[鄉鎮市區]))(?<others>.+)/g;
+    if (address && address.search(addressRegEx) === -1) {
       return res.status(400).json({ ok: 0, message: '地址格式有誤，請再次確認！' });
     }
     console.log('驗證通過');
     try {
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(userId);
       await user.update({
         nickname,
         email,
         address,
-        creditcard
+        creditCard,
       });
       return res.json({ ok: 1, message: '個人資料修改成功囉！' });
-    } catch (err) {
-      return res.status(400).json({ ok: 0, message: err });
+    } catch (error) {
+      return res.status(400).json({ ok: 0, message: error });
     }
   },
-
-  getUser: async (req, res) => {
-    // 用 email 拿 user_id
-    try {
-      // const { email } = req.session;
-      const email = '666@gmail.com'; // 測試用
-      if (!email) {
-        return res.status(400).json({ ok: 0, message: '沒有帶上 email' });
-      }
-      const userData = await User.findOne({ where: { email } });
-      if (!userData) {
-        return res.status(400).json({ ok: 0, message: '沒有這個 email' });
-      }
-      const user_id = userData.dataValues.id;
-      return {
-        ok: 1,
-        user_id
-      };
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ ok: 0, message: error });
-    }
-  }
 };
 
 module.exports = userController;

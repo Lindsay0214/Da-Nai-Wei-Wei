@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 const orderController = require('../controllers/orderController'); // 引入 controller 檔案
@@ -14,29 +15,26 @@ router.get('/', (req, res) => {
   });
 });
 
-function redirectBack(req, res) {
-  res.redirect('back');
-}
-
 // Shop
-router.get('/shops', adminController.getAllShops);
-router.post('/shops', adminController.addShop);
-router.patch('/shops/:id', adminController.updateShop);
-router.delete('/shops/:id', adminController.deleteShop);
+router.get('/shops', checkPermission('isAdmin'), adminController.getAllShops);
+router.post('/shops', checkPermission('isAdmin'), adminController.addShop);
+router.patch('/shops/:id', checkPermission('isAdmin'), adminController.updateShop);
+router.delete('/shops/:id', checkPermission('isAdmin'), adminController.deleteShop);
 
 // User
 router.get('/users/logout', userController.logout);
-router.post('/users/login', userController.login, redirectBack);
-router.post('/users/register', userController.register, redirectBack);
+router.post('/users/login', userController.login);
+router.post('/users/register', userController.register);
+
 router.get('/users', userController.getAllInfo);
-router.get('/users/:id', userController.getMyInfo);
-router.patch('/users/:id', userController.updateMyInfo);
+router.get('/user', userController.getMyInfo);
+router.patch('/user', userController.updateMyInfo);
 
 // Products
 router.get('/products/:userId');
-router.post('/products', productController.addProduct);
-router.delete('/products/:id', productController.deleteProduct);
-router.patch('/products/:id', productController.updateProduct);
+router.post('/products', checkPermission('isShop'), productController.addProduct);
+router.delete('/products/:id', checkPermission('isShop'), productController.deleteProduct);
+router.patch('/products/:id', checkPermission('isShop'), productController.updateProduct);
 
 // Order
 router.post('/orders', orderController.addShoppingCart);
