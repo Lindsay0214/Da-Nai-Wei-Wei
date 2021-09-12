@@ -27,8 +27,8 @@ router.post('/users/login', userController.login);
 router.post('/users/register', userController.register);
 
 router.get('/users', userController.getAllInfo);
-router.get('/user/:id', userController.getMyInfo);
-router.patch('/user/:id', userController.updateMyInfo);
+router.get('/user', userController.getMyInfo);
+router.patch('/user', userController.updateMyInfo);
 
 // Products
 router.get('/products/:userId');

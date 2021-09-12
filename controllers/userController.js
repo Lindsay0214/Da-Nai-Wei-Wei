@@ -12,6 +12,14 @@ const userController = {
     // 空值檢查
     if (!email || !nickname || !password || !email.trim() || !nickname.trim() || !password.trim())
       res.json({ ok: 0, message: '上面欄位，填好，填滿' });
+    const passwordRegEx = /^(?=.*[0-9!@#$%^&*])(?=.*[a-zA-Z]).{8,16}$/;
+    if (password && password.search(passwordRegEx) === -1) {
+      return res.status(400).json({ ok: 0, message: '密碼格式有誤，請再次確認！' });
+    }
+    const emailRegEx = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+    if (email && email.search(emailRegEx) === -1) {
+      return res.status(400).json({ ok: 0, message: '信箱格式有誤，請再次確認！' });
+    }
     try {
       const user = await User.findOne({ where: { email } });
       // 重複帳號檢查
@@ -78,26 +86,25 @@ const userController = {
   },
 
   updateMyInfo: async (req, res) => {
-    const { id } = req.params; // get user id
-    const { nickname, email, address, creditcard } = req.body;
-
+    const { userId } = req.session; // get user id
+    const { nickname, email, address, creditCard } = req.body;
     if (
       !nickname ||
       !email ||
       !address ||
-      !creditcard ||
+      !creditCard ||
       !nickname.trim() ||
       !email.trim() ||
       !address.trim() ||
-      !creditcard.trim()
+      !creditCard.trim()
     )
       return res.status(400).json({ ok: 0, message: '上面欄位，填好，填滿' });
 
-    const creditcardRegEx = /\d{4}-?\d{4}-?\d{4}-?\d{4}/g; // 先用最基本的
-    if (creditcard && creditcard.search(creditcardRegEx) === -1) {
+    const creditCardRegEx = /\d{4}-?\d{4}-?\d{4}-?\d{4}/g; // 先用最基本的
+    if (creditCard && creditCard.search(creditCardRegEx) === -1) {
       return res.status(400).json({ ok: 0, message: '信用卡資訊有誤，請再次確認！' });
     }
-    const emailRegEx = /^([\w]+)(.[\w]+)*@([\w]+)(.[\w]{2,3}){1,2}$/g;
+    const emailRegEx = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     if (email && email.search(emailRegEx) === -1) {
       return res.status(400).json({ ok: 0, message: '信箱格式有誤，請再次確認！' });
     }
@@ -108,12 +115,12 @@ const userController = {
     }
     console.log('驗證通過');
     try {
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(userId);
       await user.update({
         nickname,
         email,
         address,
-        creditcard,
+        creditCard,
       });
       return res.json({ ok: 1, message: '個人資料修改成功囉！' });
     } catch (error) {
