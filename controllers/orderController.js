@@ -61,47 +61,65 @@ const orderController = {
   },
   updateShoppingCart: async (req, res) => {
     try {
-      const user_id = req.session.userId;
-      const { id: order_id } = await Order.findOne({ where: { user_id } });
-      const orderResult = await Order.findOne({
-        where: { id: order_id },
-        include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
-      });
-      const orderItemData = orderResult.Order_items;
-      let item_count = 0;
-      let total_price = 0;
-      for (let i = 0; i < orderItemData.length; i++) {
-        const { product_id } = orderItemData[i];
-        const productData = await Product.findByPk(product_id);
-        total_price += productData.price * orderItemData[i].quantity;
-        item_count += orderItemData[i].quantity;
+      const orders = []
+      const successData = []
+      const errorData = []
+      for (const order_id of req.body.orderIdArray) {
+        orders.push(Order.findOne({
+          where: { id: order_id },
+          include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
+        })) 
       }
-      const result = await Order.update(
-        {
-          item_count,
-          total_price,
+  
+      const orderResult = await Promise.all(orders)
+  
+      for (const order of orderResult) {
+        const orderItem = order.Order_items
+        let itemCount = 0
+        let totalPrice = 0
+        for (const item of orderItem) {
+          const product = await Product.findByPk(item.product_id)
+          itemCount += item.quantity
+          totalPrice += product.price * item.quantity
+        }
+        const updResult = await Order.update(
+          {
+            item_count: itemCount,
+            total_price: totalPrice
+          },
+          { where: { id: order.id } }
+        )
+        if (updResult[0] === 1) {
+          successData.push({
+            orderId: order.id,
+            itemCount: itemCount,
+            totalPrice: totalPrice,
+          })
+        } else {
+          errorData.push({
+            orderId: order.order_id,
+            itemCount: order.itemCount,
+            totalPrice: order.totalPrice
+          })
+        }
+      }
+  
+      return res.json({
+        ok: 1,
+        data: {
+          successData,
+          errorData
         },
-        { where: { user_id } }
-      );
-      if (result[0] === 1) {
-        return res.json({
-          ok: 1,
-          message: '更新購物車成功',
-          item_count,
-          total_price,
-        });
-      }
-      if (result[0] !== 1) {
-        return res.json({
-          ok: 1,
-          message: '更新購物車失敗',
-        });
-      }
+        message: ''
+      });
+  
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ ok: 0, message: error });
+      return res.status(500).json({ ok: 0, data: {}, message: error });
     }
   },
+  
+  
   deleteShoppingCart: async (req, res) => {
     try {
       const user_id = req.session.userId;

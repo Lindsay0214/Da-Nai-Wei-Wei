@@ -5,38 +5,61 @@ const orderController = require('../controllers/orderController'); // 引入 con
 const orderItemController = require('../controllers/orderItemController');
 const adminController = require('../controllers/adminController');
 const productController = require('../controllers/productController');
-const checkPermission = require('../middleware/checkPermission');
 const userController = require('../controllers/userController');
+const passport = require('../config/passport');
 
-router.get('/', (req, res) => {
-  res.json({
-    message: 'welcome',
+// router.get('/', (req, res) => {
+//   res.json({
+//     message: 'welcome',
+//   });
+// });
+
+
+
+// ====================================================================
+router.get('/auth/facebook', passport.authenticate('facebook'));
+
+router.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/users/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
   });
-});
-
-function redirectBack(req, res) {
-  res.redirect('back');
-}
-
+  
+  // router.get('/', function(req, res, next) {
+  //   res.render('index', { title: 'Express' });
+  // });
+  
+  // router.get('/success', function(req, res, next) {
+  //     // console.log(req.user);
+  //     res.render('success', {data: req.user});
+  // })
+  
+  // router.get('/auth/facebook', passport.authenticate('facebook'));
+  
+  // router.get('/auth/facebook/callback',
+  //   passport.authenticate('facebook', { successRedirect: '/success',
+  //                                       failureRedirect: '/' }));
+// ====================================================================
 // Shop
 router.get('/shops', adminController.getAllShops);
-router.post('/shops', adminController.addShop);
-router.patch('/shops/:id', adminController.updateShop);
-router.delete('/shops/:id', adminController.deleteShop);
+router.post('/shop', adminController.addShop);
+router.patch('/shop', adminController.updateShop);
+router.delete('/shop', adminController.deleteShop);
 
 // User
 router.get('/users/logout', userController.logout);
-router.post('/users/login', userController.login, redirectBack);
-router.post('/users/register', userController.register, redirectBack);
+router.post('/users/login', userController.login);
+router.post('/users/register', userController.register);
 router.get('/users', userController.getAllInfo);
-router.get('/users/:id', userController.getMyInfo);
-router.patch('/users/:id', userController.updateMyInfo);
+router.get('/user', userController.getMyInfo);
+router.patch('/user', userController.updateMyInfo);
 
 // Products
 router.get('/products/:userId');
-router.post('/products', productController.addProduct);
-router.delete('/products/:id', productController.deleteProduct);
-router.patch('/products/:id', productController.updateProduct);
+router.post('/product', productController.addProduct);
+router.delete('/product', productController.deleteProduct);
+router.patch('/product', productController.updateProduct);
 
 // Order
 router.post('/orders', orderController.addShoppingCart);
