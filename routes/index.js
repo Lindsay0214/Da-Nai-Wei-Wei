@@ -67,17 +67,17 @@ router.patch(
 );
 
 // Order
-router.post('/orders', orderController.addShoppingCart);
-router.post('/payments', paymentController.addOrder);
-router.post('/result', paymentController.paymentResult);
-router.get('/orders', orderController.getOrder);
-router.patch('/orders', orderController.updateShoppingCart);
-router.delete('/orders', orderController.deleteShoppingCart);
+router.post('/orders', catchAsyncError(orderController.addShoppingCart));
+router.post('/payments', catchAsyncError(paymentController.addOrder));
+router.post('/result', catchAsyncError(paymentController.paymentResult));
+router.get('/orders', catchAsyncError(orderController.getOrder));
+router.patch('/orders', catchAsyncError(orderController.updateShoppingCart));
+router.delete('/orders', catchAsyncError(orderController.deleteShoppingCart));
 
 // Order_item
-router.post('/order-items', orderItemController.addOrderItem);
-router.get('/order-items', orderItemController.getOrderItem);
-router.patch('/order-items', orderItemController.updateOrderItem);
-router.delete('/order-items', orderItemController.deleteOrderItem);
+router.post('/order-items', catchAsyncError(orderItemController.addOrderItem));
+router.get('/order-items', catchAsyncError(orderItemController.getOrderItem));
+router.patch('/order-items', catchAsyncError(orderItemController.updateOrderItem));
+router.delete('/order-items', catchAsyncError(orderItemController.deleteOrderItem));
 
 module.exports = router;
