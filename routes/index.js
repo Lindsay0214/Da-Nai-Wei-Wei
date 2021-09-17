@@ -18,12 +18,24 @@ router.get('/', (req, res) => {
 });
 
 // Shop
-router.get('/shops', checkPermission('isAdmin'), catchAsyncError(adminController.getAllShops));
-router.post('/shops', checkPermission('isAdmin'), catchAsyncError(adminController.addShop));
-router.patch('/shops/:id', checkPermission('isAdmin'), catchAsyncError(adminController.updateShop));
+router.get(
+  '/shops',
+  catchAsyncError(checkPermission('isAdmin')),
+  catchAsyncError(adminController.getAllShops)
+);
+router.post(
+  '/shops',
+  catchAsyncError(checkPermission('isAdmin')),
+  catchAsyncError(adminController.addShop)
+);
+router.patch(
+  '/shops/:id',
+  catchAsyncError(checkPermission('isAdmin')),
+  catchAsyncError(adminController.updateShop)
+);
 router.delete(
   '/shops/:id',
-  checkPermission('isAdmin'),
+  catchAsyncError(checkPermission('isAdmin')),
   catchAsyncError(adminController.deleteShop)
 );
 
@@ -38,15 +50,19 @@ router.patch('/user', catchAsyncError(userController.updateMyInfo));
 
 // Products
 router.get('/products/:userId');
-router.post('/products', checkPermission('isShop'), catchAsyncError(productController.addProduct));
+router.post(
+  '/products',
+  catchAsyncError(checkPermission('isShop')),
+  catchAsyncError(productController.addProduct)
+);
 router.delete(
   '/products/:id',
-  checkPermission('isShop'),
+  catchAsyncError(checkPermission('isShop')),
   catchAsyncError(productController.deleteProduct)
 );
 router.patch(
   '/products/:id',
-  checkPermission('isShop'),
+  catchAsyncError(checkPermission('isShop')),
   catchAsyncError(productController.updateProduct)
 );
 
