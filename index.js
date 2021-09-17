@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://jason-lin80826.github.io/'],
+    origin: ['http://localhost:3001', 'https://jason-lin80826.github.io/'],
     credentials: true,
     sameSite: 'none',
   })

@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 });
 
 // Shop
+
 router.get(
   '/shops',
   catchAsyncError(checkPermission('isAdmin')),
@@ -39,6 +40,7 @@ router.delete(
   catchAsyncError(adminController.deleteShop)
 );
 
+
 // User
 router.get('/users/logout', userController.logout);
 router.post('/users/login', catchAsyncError(userController.login));
@@ -49,6 +51,7 @@ router.get('/user', catchAsyncError(userController.getMyInfo));
 router.patch('/user', catchAsyncError(userController.updateMyInfo));
 
 // Products
+
 router.get('/products/:userId');
 router.post(
   '/products',
@@ -65,6 +68,11 @@ router.patch(
   catchAsyncError(checkPermission('isShop')),
   catchAsyncError(productController.updateProduct)
 );
+
+
+// Global 暫時假資料
+router.get('/products', productController.getProducts);
+router.get('/shops', productController.getShops);
 
 // Order
 router.post('/orders', orderController.addShoppingCart);
