@@ -6,16 +6,23 @@ const cors = require('cors');
 const routes = require('./routes');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'https://jason-lin80826.github.io/'],
+    credentials: true,
+    sameSite: 'none',
+  })
+);
 app.use(
   session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
+    cookie: { httpOnly: true, secure: false },
   })
 );
 

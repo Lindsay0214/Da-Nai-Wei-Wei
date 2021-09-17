@@ -8,6 +8,7 @@ const adminController = require('../controllers/adminController');
 const productController = require('../controllers/productController');
 const checkPermission = require('../middleware/checkPermission');
 const userController = require('../controllers/userController');
+const paymentController = require('../controllers/paymentController');
 
 router.get('/', (req, res) => {
   res.json({
@@ -38,6 +39,8 @@ router.patch('/products/:id', checkPermission('isShop'), productController.updat
 
 // Order
 router.post('/orders', orderController.addShoppingCart);
+router.post('/payments', paymentController.addOrder);
+router.post('/result', paymentController.paymentResult);
 router.get('/orders', orderController.getOrder);
 router.patch('/orders', orderController.updateShoppingCart);
 router.delete('/orders', orderController.deleteShoppingCart);

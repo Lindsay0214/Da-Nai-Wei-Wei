@@ -1,6 +1,6 @@
 const db = require('../models');
 
-const { Order_item, Order } = db;
+const { Order_item, Order, Product } = db;
 const orderItemController = {
   addOrderItem: async (req, res) => {
     try {
@@ -37,19 +37,32 @@ const orderItemController = {
       return res.status(500).json({ ok: 0, message: error });
     }
   },
-  getOrderItem: async (req, res) => {
+  getOrderItem: async (req, res, next) => {
     try {
       const user_id = req.session.userId;
       const { id: order_id } = await Order.findOne({ where: { user_id } });
       const result = await Order.findOne({
         where: { id: order_id },
-        include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
+        include: [Order_item], // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
       });
       const data = result.Order_items;
+      const productInfo = [];
+      for (let i = 0; i < data.length; i += 1) {
+        const { product_id } = data[i];
+        // eslint-disable-next-line no-await-in-loop
+        const productData = await Product.findByPk(product_id);
+        productInfo.push({
+          name: productData.name,
+          price: productData.price,
+          quantity: data[i].quantity,
+        });
+      }
+      console.log(productInfo);
       return res.json({
         ok: 1,
         message: '查詢成功',
         data,
+        productInfo,
       });
     } catch (error) {
       console.log(error);
