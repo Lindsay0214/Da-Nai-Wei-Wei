@@ -17,10 +17,10 @@ router.get('/', (req, res) => {
 });
 
 // Shop
-router.get('/shops', checkPermission('isAdmin'), adminController.getAllShops);
-router.post('/shops', checkPermission('isAdmin'), adminController.addShop);
-router.patch('/shops/:id', checkPermission('isAdmin'), adminController.updateShop);
-router.delete('/shops/:id', checkPermission('isAdmin'), adminController.deleteShop);
+router.get('/admin', checkPermission('isAdmin'), adminController.getAllShops);
+router.post('/admin', checkPermission('isAdmin'), adminController.addShop);
+router.patch('/admin/:id', checkPermission('isAdmin'), adminController.updateShop);
+router.delete('/admin/:id', checkPermission('isAdmin'), adminController.deleteShop);
 
 // User
 router.get('/users/logout', userController.logout);
@@ -32,10 +32,13 @@ router.get('/user', userController.getMyInfo);
 router.patch('/user', userController.updateMyInfo);
 
 // Products
-router.get('/products/:userId');
 router.post('/products', checkPermission('isShop'), productController.addProduct);
 router.delete('/products/:id', checkPermission('isShop'), productController.deleteProduct);
 router.patch('/products/:id', checkPermission('isShop'), productController.updateProduct);
+
+// Global 暫時假資料
+router.get('/products', productController.getProducts);
+// router.get('/shops', productController.getShops);
 
 // Order
 router.post('/orders', orderController.addShoppingCart);
