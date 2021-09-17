@@ -40,7 +40,6 @@ router.delete(
   catchAsyncError(adminController.deleteShop)
 );
 
-
 // User
 router.get('/users/logout', userController.logout);
 router.post('/users/login', catchAsyncError(userController.login));
@@ -68,7 +67,6 @@ router.patch(
   catchAsyncError(checkPermission('isShop')),
   catchAsyncError(productController.updateProduct)
 );
-
 
 // Global 暫時假資料
 router.get('/products', productController.getProducts);
