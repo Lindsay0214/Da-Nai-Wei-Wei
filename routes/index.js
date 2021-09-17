@@ -38,7 +38,7 @@ router.patch('/products/:id', checkPermission('isShop'), productController.updat
 
 // Global 暫時假資料
 router.get('/products', productController.getProducts);
-// router.get('/shops', productController.getShops);
+router.get('/shops', productController.getShops);
 
 // Order
 router.post('/orders', orderController.addShoppingCart);

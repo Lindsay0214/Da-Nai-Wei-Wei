@@ -1,21 +1,19 @@
 const db = require('../models');
 
-const { Product } = db;
+const { Product, User } = db;
 
 const productController = {
   // 獲取 shops <測試失敗/暫擱>
-  // getShops: async (req, res) => {
-  //   try {
-  //     const shops = await User.findAll({
-  //       attributes: { exclude: ['password'] },
-  //       where: { is_deleted: false, role: 'shop' },
-  //     });
-  //     console.log("---------------test---------------------")
-  //     return res.json({ ok: 1, message: 'success', shops });
-  //   } catch (error) {
-  //     return res.status(400).json({ ok: 0, message: error });
-  //   }
-  // },
+  getShops: async (req, res) => {
+    try {
+      const shops = await User.findAll({
+        where: { is_deleted: false, role: 'shop' },
+      });
+      return res.json({ ok: 1, message: 'success', shops });
+    } catch (error) {
+      return res.status(400).json({ ok: 0, message: error });
+    }
+  },
   // 獲取 products
   getProducts: async (req, res) => {
     try {
