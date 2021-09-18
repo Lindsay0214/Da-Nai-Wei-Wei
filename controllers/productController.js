@@ -6,26 +6,19 @@ const { Product, User } = db;
 const productController = {
   // 獲取 shops <測試失敗/暫擱>
   getShops: async (req, res) => {
-    try {
-      const shops = await User.findAll({
-        where: { is_deleted: false, role: 'shop' },
-      });
-      return res.json({ ok: 1, message: 'success', shops });
-    } catch (error) {
-      return res.status(400).json({ ok: 0, message: error });
-    }
+    const shops = await User.findAll({
+      where: { is_deleted: false, role: 'shop' },
+    });
+    if (!shops) throw new BadRequestError('查無資料');
+    return res.json({ ok: 1, message: 'success', shops });
   },
   // 獲取 products
   getProducts: async (req, res) => {
-    try {
-      const products = await Product.findAll({
-        where: { is_deleted: false },
-      });
-      console.log("---------------test---------------------")
-      return res.json({ ok: 1, message: 'success', products });
-    } catch (error) {
-      return res.status(400).json({ ok: 0, message: error });
-    }
+    const products = await Product.findAll({
+      where: { is_deleted: false },
+    });
+    if (!products) throw new BadRequestError('查無資料');
+    return res.json({ ok: 1, message: 'success', products });
   },
   // 新增、編輯
   addProduct: async (req, res) => {
