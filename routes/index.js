@@ -44,6 +44,7 @@ router.delete(
 router.get('/users/logout', userController.logout);
 router.post('/users/login', catchAsyncError(userController.login));
 router.post('/users/register', catchAsyncError(userController.register));
+router.get('/users/me', catchAsyncError(userController.getMe));
 
 router.get('/users', catchAsyncError(userController.getAllInfo));
 router.get('/user', catchAsyncError(userController.getMyInfo));
