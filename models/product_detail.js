@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   Product_detail.init(
     {
       ice: DataTypes.STRING,
-      sweetness: DataTypes.INTEGER,
+      sweetness: DataTypes.STRING,
+      size: DataTypes.STRING,
     },
     {
       sequelize,

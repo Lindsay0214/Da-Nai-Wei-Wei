@@ -4,21 +4,26 @@ const db = require('../models');
 const { Order_item, Order, Product } = db;
 const orderItemController = {
   addOrderItem: async (req, res) => {
-    const user_id = req.session.userId;
-    const { id: order_id } = await Order.findOne({ where: { user_id } });
-    const { product_id, detail_id, quantity } = req.body;
-    if (!product_id || !detail_id || !quantity) throw new GeneralError('上面欄位，填好，填滿');
-    const result = await Order_item.findOrCreate({
-      where: { order_id, product_id },
-      defaults: {
-        history_id: 0, // 用 null sql 語句會說不能是 null
-        detail_id,
-        quantity,
-      },
-    });
-    if (!result) throw new BadRequestError('查無此筆資料');
-    if (result[1]) {
-      // 有新增成功是 true , 已經存在所以沒有新增是 false
+    try {
+      const user_id = req.session.userId;
+      const { id: order_id } = await Order.findOne({ where: { user_id } });
+      const { product_id, detail_id, quantity } = req.body;
+      if (!product_id || !detail_id || !quantity) {
+        return res.status(400).json({
+          ok: 0,
+          message: '商品編號或是冰糖編號或是數量沒有填寫',
+        });
+      }
+      const result = await Order_item.create({
+        where: { order_id },
+      });
+      if (result[1]) {
+        // 有新增成功是 true , 已經存在所以沒有新增是 false
+        return res.status(200).json({
+          ok: 1,
+          message: '新的物品已加入購物車',
+        });
+      }
       return res.status(200).json({
         ok: 1,
         message: '新的物品已加入購物車',
