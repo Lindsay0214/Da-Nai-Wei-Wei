@@ -4,6 +4,7 @@ const session = require('express-session');
 const cors = require('cors');
 
 const routes = require('./routes');
+const errorHandler = require('./middlewares/error/errorHandler');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -12,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://jason-lin80826.github.io/'],
+    origin: ['http://localhost:3001', 'https://jason-lin80826.github.io/'],
     credentials: true,
     sameSite: 'none',
   })
@@ -34,6 +35,8 @@ app.use((req, res, next) => {
 
 app.options('*', cors());
 app.use('/', routes);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);

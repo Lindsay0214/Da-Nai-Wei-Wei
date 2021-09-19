@@ -1,6 +1,8 @@
+/* eslint-disable new-cap */
 const db = require('../models');
 const ecpay_payment = require('../node_modules/ecpay_aio_nodejs/lib/ecpay_payment');
 const options = require('../node_modules/ecpay_aio_nodejs/conf/config-example');
+const { BadRequestError } = require('../middlewares/error/errors');
 
 const { Order } = db;
 
@@ -27,16 +29,14 @@ const onTimeValue = function () {
 const paymentController = {
   addOrder: (req, res) => {
     const uid = `${randomValue(10, 99)}1234567890234567${randomValue(10, 99)}`;
-    console.log(req.body);
     let ItemName = '';
     const { total, productInfo } = req.body;
     productInfo.forEach((element) => {
       ItemName += `${element.name}/${element.price}/${element.quantity}#`;
     });
-    console.log(ItemName);
     const base_param = {
-      MerchantTradeNo: uid, //請帶20碼uid, ex: f0a0d7e9fae1bb72bc93
-      MerchantTradeDate: onTimeValue(), //ex: 2017/02/13 15:45:30
+      MerchantTradeNo: uid, // 請帶20碼uid, ex: f0a0d7e9fae1bb72bc93
+      MerchantTradeDate: onTimeValue(), // ex: 2017/02/13 15:45:30
       TotalAmount: total,
       TradeDesc: '感謝您的訂購',
       ItemName,
@@ -52,24 +52,11 @@ const paymentController = {
     const create = new ecpay_payment(options);
     let parameters = {};
     const invoice = {};
-    try {
-      const htm = create.payment_client.aio_check_out_credit_onetime((parameters = base_param));
-      // res.render('payment_action', {
-      //     result: htm
-      // })
-      res.send(htm);
-    } catch (err) {
-      console.log(err);
-      // let error = {
-      //     status: '500',
-      //     stack: ""
-      // }
-      // res.render('error', {
-      //     message: err,
-      //     error: error
-      // })
-    }
+    const htm = create.payment_client.aio_check_out_credit_onetime((parameters = base_param));
+    if (!htm) throw new BadRequestError('查無此筆資料');
+    res.send(htm);
   },
+
   paymentResult: (req, res) => {
     const rtnCode = req.body.RtnCode;
     const simulatePaid = req.body.SimulatePaid;
@@ -93,7 +80,6 @@ const paymentController = {
       paymentType: paymentType,
       tradeAmt: tradeAmt,
     };
-    console.log(paymentInfo);
     if (rtnCode === '1' && simulatePaid === '1') {
       // 這部分可與資料庫做互動
       res.json(paymentInfo);
