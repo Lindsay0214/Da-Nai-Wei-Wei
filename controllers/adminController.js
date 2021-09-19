@@ -15,7 +15,12 @@ const adminController = {
     if (!users) throw new BadRequestError('找不到使用者');
     return res.json({ ok: 1, message: 'success', users });
   },
-
+  getShop: async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
+    if (!user) throw new GeneralError('查無此店家');
+    return res.json({ ok: 1, message: 'success', user });
+  },
   addShop: async (req, res) => {
     const role = 'shop';
     const { nickname, password, email, address, brand_name, URL } = req.body;
@@ -37,17 +42,19 @@ const adminController = {
 
   updateShop: async (req, res) => {
     const { id } = req.params;
-    const { nickname, email, address, brand_name, URL } = req.body;
-    if (!nickname || !email || !address || !brand_name || !URL)
-      throw new GeneralError('上面欄位，填好，填滿');
+    const { address, brand_name, URL } = req.body;
+    // if (!address || !brand_name || !URL) throw new GeneralError('上面欄位，填好，填滿');
+    if (!address || !brand_name) throw new GeneralError('上面欄位，填好，填滿');
     const user = await User.findByPk(id);
     await user.update({
-      nickname,
-      email,
       address,
       brand_name,
-      URL,
     });
+    // await user.update({
+    //   address,
+    //   brand_name,
+    //   URL,
+    // });
     if (!user) throw new BadRequestError('查無此店家');
     return res.json({ ok: 1, message: '修改店家成功～' });
   },

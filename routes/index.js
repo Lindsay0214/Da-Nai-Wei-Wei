@@ -34,6 +34,11 @@ router.patch(
   catchAsyncError(checkPermission('isAdmin')),
   catchAsyncError(adminController.updateShop)
 );
+router.get(
+  '/shops/:id',
+  catchAsyncError(checkPermission('isAdmin')),
+  catchAsyncError(adminController.getShop)
+);
 router.delete(
   '/shops/:id',
   catchAsyncError(checkPermission('isAdmin')),
