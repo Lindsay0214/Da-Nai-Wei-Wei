@@ -9,6 +9,7 @@ const productController = require('../controllers/productController');
 const checkPermission = require('../middlewares/checkPermission');
 const userController = require('../controllers/userController');
 const paymentController = require('../controllers/paymentController');
+const productDetailController = require('../controllers/productDetailController');
 const { catchAsyncError } = require('../middlewares/error/errors');
 
 router.get('/', (req, res) => {
@@ -85,5 +86,8 @@ router.post('/order-items', catchAsyncError(orderItemController.addOrderItem));
 router.get('/order-items', catchAsyncError(orderItemController.getOrderItem));
 router.patch('/order-items', catchAsyncError(orderItemController.updateOrderItem));
 router.delete('/order-items', catchAsyncError(orderItemController.deleteOrderItem));
+
+// Product_detail
+router.post('/product-details', productDetailController.getProductDetail);
 
 module.exports = router;
