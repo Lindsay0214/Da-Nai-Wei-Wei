@@ -9,6 +9,7 @@ const productController = require('../controllers/productController');
 const checkPermission = require('../middleware/checkPermission');
 const userController = require('../controllers/userController');
 const paymentController = require('../controllers/paymentController');
+const productDetailController = require('../controllers/productDetailController');
 
 router.get('/', (req, res) => {
   res.json({
@@ -50,5 +51,8 @@ router.post('/order-items', orderItemController.addOrderItem);
 router.get('/order-items', orderItemController.getOrderItem);
 router.patch('/order-items', orderItemController.updateOrderItem);
 router.delete('/order-items', orderItemController.deleteOrderItem);
+
+// Product_detail
+router.post('/product-details', productDetailController.getProductDetail);
 
 module.exports = router;

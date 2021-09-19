@@ -17,11 +17,11 @@ const productController = {
         name,
         price,
         // 這邊先假設售完狀態
-        status: status[0],
+        status: status[0]
       });
       return res.json({
         ok: 1,
-        message: '新增商品成功～',
+        message: '新增商品成功～'
       });
     } catch (error) {
       return res.status(400).json({ ok: 0, message: error });
@@ -36,17 +36,17 @@ const productController = {
     }
     try {
       const product = await Product.findOne({
-        where: { id, is_deleted: false },
+        where: { id, is_deleted: false }
       });
       await product.update({
         categories,
         name,
         price,
-        status,
+        status
       });
       return res.json({
         ok: 1,
-        message: '更新商品成功～',
+        message: '更新商品成功～'
       });
     } catch (error) {
       return res.status(400).json({ ok: 0, message: error });
@@ -57,19 +57,19 @@ const productController = {
     const { id } = req.params;
     try {
       const product = await Product.findOne({
-        where: { id, is_deleted: false },
+        where: { id, is_deleted: false }
       });
       await product.update({
-        is_deleted: true,
+        is_deleted: true
       });
       return res.json({
         ok: 1,
-        message: '刪除商品成功～',
+        message: '刪除商品成功～'
       });
     } catch (error) {
       return res.status(400).json({ ok: 0, message: error });
     }
-  },
+  }
 };
 
 module.exports = productController;

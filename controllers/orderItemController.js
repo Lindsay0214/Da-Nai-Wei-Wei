@@ -13,13 +13,8 @@ const orderItemController = {
           message: '商品編號或是冰糖編號或是數量沒有填寫',
         });
       }
-      const result = await Order_item.findOrCreate({
-        where: { order_id, product_id },
-        defaults: {
-          history_id: 0, // 用 null sql 語句會說不能是 null
-          detail_id,
-          quantity,
-        },
+      const result = await Order_item.create({
+        where: { order_id },
       });
       if (result[1]) {
         // 有新增成功是 true , 已經存在所以沒有新增是 false
