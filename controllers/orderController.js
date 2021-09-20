@@ -60,7 +60,7 @@ const orderController = {
     // const { id: order_id } = await Order.findOne({ where: { user_id } });
     const orderResult = await Order.findOne({
       where: { user_id },
-      include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
+      include: Order_item, // 關聯到 Order_item 這張表格
     });
     if (!orderResult) throw new GeneralError('查無此筆資料');
     const orderItemData = orderResult.Order_items;
