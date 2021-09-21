@@ -30,8 +30,11 @@ const orderItemController = {
         ok: 1,
         message: '新的物品已加入購物車',
       });
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      return res.status(200).json({
+        ok: 1,
+        message: '此物品已存在購物車裡面',
+      });
     }
   },
   getOrderItem: async (req, res, next) => {

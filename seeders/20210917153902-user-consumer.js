@@ -1,8 +1,6 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert("Users", [
+    return queryInterface.bulkInsert('Users', [
       {
         nickname: 'John Doe',
         password: 'John111',
@@ -10,7 +8,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0111',
         address: '台北市快樂區無常街111號3樓',
         createdAt: '2021-09-10 06:05:45',
-        updatedAt: '2021-09-18 06:05:45'
+        updatedAt: '2021-09-18 06:05:45',
       },
       {
         nickname: 'Pablo Murphy',
@@ -19,7 +17,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0222',
         address: '台北市快樂區無常街222號3樓',
         createdAt: '2021-09-10 06:05:45',
-        updatedAt: '2021-09-18 06:05:45'
+        updatedAt: '2021-09-18 06:05:45',
       },
       {
         nickname: 'Devin McMahon',
@@ -28,7 +26,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0333',
         address: '台北市快樂區無常街333號3樓',
         createdAt: '2021-09-10 06:05:45',
-        updatedAt: '2021-09-18 06:05:45'
+        updatedAt: '2021-09-18 06:05:45',
       },
       {
         nickname: 'Brendan Hall',
@@ -37,7 +35,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         createdAt: '2021-09-10 06:05:45',
-        updatedAt: '2021-09-18 06:05:45'
+        updatedAt: '2021-09-18 06:05:45',
       },
       {
         nickname: 'Carly McQueen',
@@ -46,7 +44,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0555',
         address: '台北市快樂區無常街555號3樓',
         createdAt: '2021-09-10 06:05:45',
-        updatedAt: '2021-09-18 06:05:45'
+        updatedAt: '2021-09-18 06:05:45',
       },
       {
         nickname: 'Guerrero',
@@ -55,7 +53,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0000',
         address: '台北市快樂區無常街22號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Graver',
@@ -64,7 +62,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0666',
         address: '台北市快樂區無常街666號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Warner',
@@ -73,7 +71,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0777',
         address: '台北市快樂區無常街777號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Paul',
@@ -82,7 +80,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0888',
         address: '台北市快樂區無常街888號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Hunter Hopper',
@@ -91,7 +89,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0999',
         address: '台北市快樂區無常街999號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Griffin',
@@ -100,7 +98,7 @@ module.exports = {
         creditcard: '0000-0000-0000-1010',
         address: '台北市快樂區無常街101010號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Molly Blanchard',
@@ -109,7 +107,7 @@ module.exports = {
         creditcard: '0000-0000-0000-1111',
         address: '台北市快樂區無常街1111號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Noelle Blackwood',
@@ -118,7 +116,7 @@ module.exports = {
         creditcard: '0000-0000-0000-1212',
         address: '台北市快樂區無常街1212號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Lindsay',
@@ -127,7 +125,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0000',
         address: '台北市小樹屋區微笑街000號整棟',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Harry',
@@ -136,7 +134,7 @@ module.exports = {
         creditcard: '0000-0000-0011-1111',
         address: '台北市小樹屋區微笑街黃金屋2號',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Hsuan',
@@ -145,16 +143,16 @@ module.exports = {
         creditcard: '0000-0000-0022-2222',
         address: '台北市小樹屋區微笑街狗屋',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Jason',
         password: 'Aa333333',
-        email: 'jason@gmail.com',
+        email: 'jason5225@gmail.com',
         creditcard: '0000-0000-0033-3333',
         address: '台北市小樹屋區微笑街黃金屋2號',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Caroline',
@@ -163,7 +161,7 @@ module.exports = {
         creditcard: '0000-0000-0212-0000',
         address: '台北市快樂區無常街212號212樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Mindy',
@@ -172,7 +170,7 @@ module.exports = {
         creditcard: '0000-0000-0213-0000',
         address: '台北市快樂區無常街213號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
       {
         nickname: 'Brittany',
@@ -181,12 +179,12 @@ module.exports = {
         creditcard: '0000-0000-0214-0000',
         address: '台北市快樂區無常街214號3樓',
         createdAt: '2021-09-18 06:05:45',
-        updatedAt: '2021-09-28 06:05:45'
+        updatedAt: '2021-09-28 06:05:45',
       },
     ]);
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete("Users", null, {});
+    await queryInterface.bulkDelete('Users', null, {});
   },
 };
