@@ -103,6 +103,18 @@ const userController = {
     });
     return res.json({ ok: 1, message: '個人資料修改成功囉！' });
   },
+
+  // requireLogin: async (req, res) => {
+  //   const { userId } = req.session;
+  //   const user = await User.findByPk(userId);
+  //   return res.json({ ok: 1, message: 'success', user });
+  // },
+
+  getMe: async (req, res) => {
+    const user_id = req.session.userId
+    return res.json({user_id})
+  },
+
 };
 
 module.exports = userController;
