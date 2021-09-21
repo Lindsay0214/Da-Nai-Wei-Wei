@@ -44,7 +44,7 @@ const userController = {
     if (!validPassword) throw new BadRequestError('再檢查一下，有地方填錯囉！');
     req.session.userId = user.id;
     req.session.role = user.role;
-    res.json({ ok: 1, id: user.id });
+    res.json({ ok: 1, role: user.role });
   },
 
   logout: (req, res) => {
