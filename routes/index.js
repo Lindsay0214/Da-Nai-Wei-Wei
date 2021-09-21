@@ -89,7 +89,9 @@ router.delete('/orders', catchAsyncError(orderController.deleteShoppingCart));
 
 // Order_item
 router.post('/order-items', catchAsyncError(orderItemController.addOrderItem));
-router.get('/order-items', catchAsyncError(orderItemController.getOrderItem));
+router.get('/order-items', catchAsyncError(orderItemController.getOrderItem)); // 用使用者 id ，搜出她的購物車底下的所有 order items
+router.get('/order-item/:id', catchAsyncError(orderItemController.getSingleOrderItem)); // 用 order-item-id 搜出這個物品的明細
+
 router.patch('/order-items', catchAsyncError(orderItemController.updateOrderItem));
 router.delete('/order-items', catchAsyncError(orderItemController.deleteOrderItem));
 

@@ -54,7 +54,7 @@ const userController = {
 
   getAllInfo: async (req, res) => {
     const users = await User.findAll({
-      where: { is_deleted: false },
+      where: { is_deleted: false }
     });
     if (!users) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
     return res.json({ ok: 1, message: 'success', users });
@@ -87,8 +87,7 @@ const userController = {
     const emailRegEx = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     if (email && email.search(emailRegEx) === -1)
       throw new BadRequestError('信箱格式有誤，請再次確認！');
-    const addressRegEx =
-      /(?<city>\D+[縣市])(?<district>\D+?(市區|鎮區|鎮市|[鄉鎮市區]))(?<others>.+)/g;
+    const addressRegEx = /(?<city>\D+[縣市])(?<district>\D+?(市區|鎮區|鎮市|[鄉鎮市區]))(?<others>.+)/g;
     if (address && address.search(addressRegEx) === -1)
       throw new BadRequestError('地址格式有誤，請再次確認！');
     console.log('驗證通過');
@@ -99,22 +98,19 @@ const userController = {
       nickname,
       email,
       address,
-      creditCard,
+      creditCard
     });
     return res.json({ ok: 1, message: '個人資料修改成功囉！' });
   },
-
   // requireLogin: async (req, res) => {
   //   const { userId } = req.session;
   //   const user = await User.findByPk(userId);
   //   return res.json({ ok: 1, message: 'success', user });
   // },
-
   getMe: async (req, res) => {
     const user_id = req.session.userId
     return res.json({user_id})
   },
-
 };
 
 module.exports = userController;

@@ -41,7 +41,6 @@ const productDetailController = {
       const result = await Product_detail.findOne({
         where: { size, sweetness, ice }
       });
-
       if (result === null) {
         return res.json({
           ok: 0,
