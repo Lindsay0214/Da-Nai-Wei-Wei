@@ -76,15 +76,12 @@ const orderController = {
   },
   updateShoppingCart: async (req, res) => {
     const user_id = req.session.userId;
-    // const { id: order_id } = await Order.findOne({ where: { user_id } });
     const orderResult = await Order.findOne({
       where: { user_id, is_paid: 0 },
       include: Order_item, // 關聯到 Order_item 這張表格
     });
     if (!orderResult) throw new GeneralError('查無此筆資料');
     const orderItemData = orderResult.Order_items;
-    console.log(orderItemData[1].product_id);
-    console.log(123);
     let item_count = 0;
     let total_price = 0;
     for (let i = 0; i < orderItemData.length; i += 1) {
