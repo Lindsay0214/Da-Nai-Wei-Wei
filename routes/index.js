@@ -80,7 +80,7 @@ router.get('/shops', productController.getShops);
 
 // Order
 router.post('/orders', catchAsyncError(orderController.addShoppingCart));
-router.post('/payments', catchAsyncError(paymentController.addOrder));
+router.get('/payments', catchAsyncError(paymentController.addOrder));
 router.post('/result', catchAsyncError(paymentController.paymentResult));
 router.get('/orders', catchAsyncError(orderController.getOrder));
 router.patch('/orders', catchAsyncError(orderController.updateShoppingCart));
