@@ -6,7 +6,7 @@ const orderItemController = {
   addOrderItem: async (req, res) => {
     try {
       const user_id = req.session.userId;
-      const { id: order_id } = await Order.findOne({ where: { user_id } });
+      const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: 0 } });
       if (!order_id) {
         return res.status(400).json({
           ok: 0,
@@ -36,7 +36,7 @@ const orderItemController = {
   },
   getOrderItem: async (req, res, next) => {
     const user_id = req.session.userId;
-    const { id: order_id } = await Order.findOne({ where: { user_id } });
+    const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: 0 } });
     const result = await Order.findOne({
       where: { id: order_id },
       include: [Order_item], // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
@@ -74,14 +74,14 @@ const orderItemController = {
   },
   getSingleOrderItem: async (req, res, next) => {
     const { id } = req.params;
-    console.log(id);
     const result = await Order_item.findOne({
       where: { id },
       include: [Product, Product_detail], // 關聯到 Product 這張表格
     });
+    const { quantity } = result.dataValues;
     const { name: productName, price } = result.Product.dataValues;
     const { ice, sweetness, size } = result.Product_detail.dataValues;
-    const data = { order_item_id: result.id, productName, price, ice, sweetness, size };
+    const data = { order_item_id: result.id, productName, price, ice, sweetness, size, quantity };
     return res.json({
       ok: 1,
       message: '查詢成功',
