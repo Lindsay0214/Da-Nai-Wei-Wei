@@ -50,12 +50,20 @@ router.get('/user', catchAsyncError(userController.getMyInfo));
 router.patch('/user', catchAsyncError(userController.updateMyInfo));
 
 // Products
-
-router.get('/products/:userId');
-router.post(
+router.get(
   '/products',
   catchAsyncError(checkPermission('isShop')),
+  catchAsyncError(productController.getProducts)
+);
+router.post(
+  '/product',
+  catchAsyncError(checkPermission('isShop')),
   catchAsyncError(productController.addProduct)
+);
+router.get(
+  '/products/:id',
+  catchAsyncError(checkPermission('isShop')),
+  catchAsyncError(productController.getProduct)
 );
 router.delete(
   '/products/:id',
