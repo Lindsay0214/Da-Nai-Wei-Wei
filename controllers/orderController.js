@@ -1,18 +1,18 @@
 const { GeneralError, BadRequestError } = require('../middlewares/error/errors');
 const db = require('../models');
 
-const { Order, Product, Order_item } = db;
+const { Order, Product, Order_item, User } = db;
 
 const orderController = {
   addShoppingCart: async (req, res) => {
     const user_id = req.session.userId;
     const result = await Order.findOrCreate({
-      where: { user_id },
+      where: { user_id, is_paid: 0 },
       defaults: {
         status: '未完成',
         item_count: 0,
         total_price: 0,
-        is_paid: false,
+        is_paid: 0,
       },
     });
     if (!result) throw new GeneralError('查無此筆資料');
@@ -34,8 +34,10 @@ const orderController = {
   getOrder: async (req, res) => {
     const user_id = req.session.userId;
     const result = await Order.findOne({
-      where: { user_id },
+      where: { user_id, is_paid: 0 },
+      include: [User],
     });
+    const { nickname, email } = result.User;
     if (!result) throw new BadRequestError('查無此筆資料');
     if (result === null) {
       return res.json({
@@ -52,19 +54,37 @@ const orderController = {
       item_count, // order 這張表格裡面的 item_count
       total_price, // order 這張表格裡面的 total_price
       is_paid, // order 這張表格裡面的 is_paid
+      nickname,
+      email,
     });
   },
-
+  getOrdersHistory: async (req, res) => {
+    const user_id = req.session.userId;
+    const result = await Order.findAll({
+      where: { user_id },
+      order: [['id', 'DESC']],
+    });
+    const data = [];
+    for (let i = 0; i < result.length; i++) {
+      data.push(result[i].dataValues);
+    }
+    return res.json({
+      ok: 1,
+      message: '搜出所有歷史訂單了',
+      data,
+    });
+  },
   updateShoppingCart: async (req, res) => {
     const user_id = req.session.userId;
     // const { id: order_id } = await Order.findOne({ where: { user_id } });
     const orderResult = await Order.findOne({
-      where: { user_id },
-      include: Order_item, // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
+      where: { user_id, is_paid: 0 },
+      include: Order_item, // 關聯到 Order_item 這張表格
     });
     if (!orderResult) throw new GeneralError('查無此筆資料');
     const orderItemData = orderResult.Order_items;
     console.log(orderItemData[1].product_id);
+    console.log(123);
     let item_count = 0;
     let total_price = 0;
     for (let i = 0; i < orderItemData.length; i += 1) {
@@ -80,7 +100,7 @@ const orderController = {
         item_count,
         total_price,
       },
-      { where: { user_id } }
+      { where: { user_id, is_paid: 0 } }
     );
     if (result[0] === 1) {
       return res.json({
@@ -102,7 +122,7 @@ const orderController = {
     const user_id = req.session.userId;
     if (!user_id) throw new GeneralError('查無此筆資料');
     // 這邊只有刪除 Order 沒有把 order-items 刪掉，之後看需不需要
-    await Order.destroy({ where: { user_id } });
+    await Order.destroy({ where: { user_id, is_paid: 0 } });
     return res.json({
       ok: 1,
       message: '刪除成功',

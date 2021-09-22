@@ -1,14 +1,12 @@
 /* eslint-disable new-cap */
+const { nanoid } = require('nanoid');
 const db = require('../models');
 const ecpay_payment = require('../node_modules/ecpay_aio_nodejs/lib/ecpay_payment');
 const options = require('../node_modules/ecpay_aio_nodejs/conf/config-example');
 const { BadRequestError } = require('../middlewares/error/errors');
 
-const { Order } = db;
+const { Order, Order_item, Product } = db;
 
-const randomValue = function (min, max) {
-  return Math.round(Math.random() * (max - min) + min);
-};
 const onTimeValue = function () {
   const date = new Date();
   const mm = date.getMonth() + 1;
@@ -27,49 +25,59 @@ const onTimeValue = function () {
   ].join('');
 };
 const paymentController = {
-  addOrder: (req, res) => {
-    const uid = `${randomValue(10, 99)}1234567890234567${randomValue(10, 99)}`;
+  addOrder: async (req, res) => {
+    console.log(123);
+    const uid = nanoid(20);
+    const user_id = req.session.userId;
+    const { id: order_id } = await Order.findOne({ where: { user_id } });
+    const result = await Order.findOne({
+      where: { id: order_id },
+      include: [Order_item], // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
+    });
+    if (!result) throw new BadRequestError('查無此筆資料');
+    const data = result.Order_items;
+    const productInfo = [];
+    for (let i = 0; i < data.length; i += 1) {
+      const { product_id } = data[i];
+      // eslint-disable-next-line no-await-in-loop
+      const productData = await Product.findByPk(product_id);
+      if (!productData) throw new BadRequestError('查無此筆資料');
+      productInfo.push({
+        name: productData.name,
+        price: productData.price,
+        quantity: data[i].quantity,
+      });
+    }
     let ItemName = '';
-    const { total, productInfo } = req.body;
     productInfo.forEach((element) => {
       ItemName += `${element.name}/${element.price}/${element.quantity}#`;
     });
     const base_param = {
       MerchantTradeNo: uid, // 請帶20碼uid, ex: f0a0d7e9fae1bb72bc93
       MerchantTradeDate: onTimeValue(), // ex: 2017/02/13 15:45:30
-      TotalAmount: total,
+      TotalAmount: `${result.total_price}`,
       TradeDesc: '感謝您的訂購',
       ItemName,
       ReturnURL: 'http://localhost:3000/result', // 付款結果通知URL
-      // OrderResultURL: 'https://rocky-harbor-38721.herokuapp.com/paymentactionresult', // 在使用者在付款結束後，將使用者的瀏覽器畫面導向該URL所指定的URL
-      // EncryptType: 1,
-      // ItemURL: 'http://item.test.tw',
-      // Remark: '該服務繳費成立時，恕不接受退款。',
-      // HoldTradeAMT: '1',
-      // StoreID: '',
-      // UseRedeem: ''
     };
     const create = new ecpay_payment(options);
     let parameters = {};
-    const invoice = {};
     const htm = create.payment_client.aio_check_out_credit_onetime((parameters = base_param));
     if (!htm) throw new BadRequestError('查無此筆資料');
     res.send(htm);
+    result.update({
+      uid,
+    });
   },
 
-  paymentResult: (req, res) => {
-    const rtnCode = req.body.RtnCode;
-    const simulatePaid = req.body.SimulatePaid;
+  paymentResult: async (req, res) => {
     const merchantID = req.body.MerchantID;
     const merchantTradeNo = req.body.MerchantTradeNo;
     const storeID = req.body.StoreID;
     const rtnMsg = req.body.RtnMsg;
-    // var tradeNo = req.body.TradeNo;
     const tradeAmt = req.body.TradeAmt;
-    // var payAmt = req.body.PayAmt;
     const paymentDate = req.body.PaymentDate;
     const paymentType = req.body.PaymentType;
-    // var paymentTypeChargeFee = req.body.PaymentTypeChargeFee;
 
     const paymentInfo = {
       merchantID: merchantID,
@@ -80,11 +88,11 @@ const paymentController = {
       paymentType: paymentType,
       tradeAmt: tradeAmt,
     };
-    if (rtnCode === '1' && simulatePaid === '1') {
+    console.log(paymentInfo);
+    if (rtnMsg === '交易成功') {
       // 這部分可與資料庫做互動
-      res.json(paymentInfo);
-    } else {
-      res.json({});
+      const target = await Order.findOne({ where: { uid: merchantTradeNo } });
+      target.update({ is_paid: true });
     }
   },
 };

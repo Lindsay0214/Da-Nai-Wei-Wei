@@ -9,6 +9,7 @@ const productController = require('../controllers/productController');
 const checkPermission = require('../middlewares/checkPermission');
 const userController = require('../controllers/userController');
 const paymentController = require('../controllers/paymentController');
+const productDetailController = require('../controllers/productDetailController');
 const { catchAsyncError } = require('../middlewares/error/errors');
 
 router.get('/', (req, res) => {
@@ -34,6 +35,11 @@ router.patch(
   catchAsyncError(checkPermission('isAdmin')),
   catchAsyncError(adminController.updateShop)
 );
+router.get(
+  '/shops/:id',
+  catchAsyncError(checkPermission('isAdmin')),
+  catchAsyncError(adminController.getShop)
+);
 router.delete(
   '/shops/:id',
   catchAsyncError(checkPermission('isAdmin')),
@@ -44,6 +50,7 @@ router.delete(
 router.get('/users/logout', userController.logout);
 router.post('/users/login', catchAsyncError(userController.login));
 router.post('/users/register', catchAsyncError(userController.register));
+router.get('/users/me', catchAsyncError(userController.getMe));
 
 router.get('/users', catchAsyncError(userController.getAllInfo));
 router.get('/user', catchAsyncError(userController.getMyInfo));
@@ -82,16 +89,21 @@ router.get('/shops', productController.getShops);
 
 // Order
 router.post('/orders', catchAsyncError(orderController.addShoppingCart));
-router.post('/payments', catchAsyncError(paymentController.addOrder));
+router.get('/payments', catchAsyncError(paymentController.addOrder));
 router.post('/result', catchAsyncError(paymentController.paymentResult));
 router.get('/orders', catchAsyncError(orderController.getOrder));
+router.get('/orders-history', catchAsyncError(orderController.getOrdersHistory));
 router.patch('/orders', catchAsyncError(orderController.updateShoppingCart));
 router.delete('/orders', catchAsyncError(orderController.deleteShoppingCart));
 
 // Order_item
 router.post('/order-items', catchAsyncError(orderItemController.addOrderItem));
-router.get('/order-items', catchAsyncError(orderItemController.getOrderItem));
+router.get('/order-items', catchAsyncError(orderItemController.getOrderItem)); // 用使用者 id ，搜出她的購物車底下的所有 order items
+router.get('/order-item/:id', catchAsyncError(orderItemController.getSingleOrderItem)); // 用 order-item-id 搜出這個物品的明細
 router.patch('/order-items', catchAsyncError(orderItemController.updateOrderItem));
 router.delete('/order-items', catchAsyncError(orderItemController.deleteOrderItem));
+
+// Product_detail
+router.post('/product-details', productDetailController.getProductDetail);
 
 module.exports = router;
