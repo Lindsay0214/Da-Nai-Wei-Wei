@@ -83,8 +83,6 @@ const orderController = {
     });
     if (!orderResult) throw new GeneralError('查無此筆資料');
     const orderItemData = orderResult.Order_items;
-    console.log(orderItemData[1].product_id);
-    console.log(123);
     let item_count = 0;
     let total_price = 0;
     for (let i = 0; i < orderItemData.length; i += 1) {
