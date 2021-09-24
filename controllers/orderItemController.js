@@ -14,6 +14,12 @@ const orderItemController = {
         });
       }
       const { product_id, detail_id, quantity } = req.body;
+      if (quantity <= 0) {
+        res.status(400).json({
+          ok: 0,
+          message: '數量不得為 0 或是負數',
+        });
+      }
       if (!product_id || !detail_id || !quantity) {
         return res.status(400).json({
           ok: 0,
@@ -93,6 +99,12 @@ const orderItemController = {
   },
   updateOrderItem: async (req, res) => {
     const { id, detail_id, quantity } = req.body;
+    if (quantity <= 0) {
+      res.status(400).json({
+        ok: 0,
+        message: '數量不得為 0 或是負數',
+      });
+    }
     if (!id || !detail_id || !quantity)
       throw new GeneralError('order_item 的 id 或 detail_id 或 quantity 沒有填寫');
     await Order_item.update({ detail_id, quantity }, { where: { id } });
