@@ -53,8 +53,10 @@ router.post('/users/register', catchAsyncError(userController.register));
 router.get('/users/me', catchAsyncError(userController.getMe));
 
 router.get('/users', catchAsyncError(userController.getAllInfo));
+router.get('/users-store', catchAsyncError(userController.getStores));
 router.get('/user', catchAsyncError(userController.getMyInfo));
 router.patch('/user', catchAsyncError(userController.updateMyInfo));
+router.patch('/user-URL', catchAsyncError(userController.updateURL));
 
 // Products
 router.get(

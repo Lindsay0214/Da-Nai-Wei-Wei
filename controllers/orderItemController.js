@@ -6,7 +6,7 @@ const orderItemController = {
   addOrderItem: async (req, res) => {
     try {
       const user_id = req.session.userId;
-      const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: 0 } });
+      const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: false } });
       if (!order_id) {
         return res.status(400).json({
           ok: 0,
@@ -45,7 +45,7 @@ const orderItemController = {
   },
   getOrderItem: async (req, res, next) => {
     const user_id = req.session.userId;
-    const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: 0 } });
+    const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: false } });
     const result = await Order.findOne({
       where: { id: order_id },
       include: [Order_item], // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
