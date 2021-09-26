@@ -1,4 +1,5 @@
 const errorHandler = (error, req, res, next) => {
+  console.log('error', error);
   if (error.statusCode) {
     return res.status(error.statusCode).json({
       ok: 0,
