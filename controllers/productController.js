@@ -14,8 +14,9 @@ const productController = {
   },
   // 獲取 products
   getProducts: async (req, res) => {
+    const user_id = req.session.userId;
     const products = await Product.findAll({
-      where: { is_deleted: false },
+      where: { user_id, is_deleted: false },
     });
     if (!products) throw new BadRequestError('查無資料');
     return res.json({ ok: 1, message: 'success', products });
