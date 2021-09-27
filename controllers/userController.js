@@ -10,7 +10,7 @@ const userController = {
   register: async (req, res) => {
     const role = 'consumer';
     const { nickname, password, email } = req.body;
-    空值檢查;
+    // 空值檢查;
     if (!email || !nickname || !password || !email.trim() || !nickname.trim() || !password.trim())
       throw new GeneralError('上面欄位，填好，填滿');
     const passwordRegEx = /^(?=.*[0-9!@#$%^&*])(?=.*[a-zA-Z]).{8,16}$/;
@@ -20,9 +20,9 @@ const userController = {
     if (email && email.search(emailRegEx) === -1)
       throw new BadRequestError('信箱格式有誤，請再次確認！');
     const user = await User.findOne({ where: { email } });
-    重複帳號檢查;
+    // 重複帳號檢查;
     if (user) throw new GeneralError('這個帳號有人用了，換一個吧～');
-    hash;
+    // hash;
     bcrypt.hash(password, saltRounds, async (err, hash) => {
       if (err) throw new GeneralError('唉唷！遇到了一些狀況呢...');
       await User.create({ email, nickname, password: hash, role });
@@ -48,8 +48,10 @@ const userController = {
   },
 
   logout: (req, res) => {
-    req.session.destroy();
-    res.json({ ok: 1, message: '成功登出囉～' });
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      return res.json({ ok: 1, message: '成功登出囉～' });
+    });
   },
 
   getAllInfo: async (req, res) => {
@@ -109,8 +111,11 @@ const userController = {
   //   return res.json({ ok: 1, message: 'success', user });
   // },
   getMe: async (req, res) => {
-    const user_id = req.session.userId;
-    return res.json({ user_id });
+    const { userId } = req.session; // get user id
+    const user = await User.findByPk(userId);
+    if (!user) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
+    const { role, email } = user;
+    return res.status(200).json({ ok: 1, role, email });
   },
   updateURL: async (req, res) => {
     const { userId } = req.session; // get user id
