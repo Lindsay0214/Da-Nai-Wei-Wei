@@ -102,6 +102,7 @@ router.get('/order-items', catchAsyncError(orderItemController.getOrderItem)); /
 router.get('/order-item/:id', catchAsyncError(orderItemController.getSingleOrderItem)); // 用 order-item-id 搜出這個物品的明細
 router.patch('/order-items', catchAsyncError(orderItemController.updateOrderItem));
 router.delete('/order-items', catchAsyncError(orderItemController.deleteOrderItem));
+router.get('/order-items', catchAsyncError(orderItemController.getIsPaid));
 
 // Product_detail
 router.post('/product-details', productDetailController.getProductDetail);
