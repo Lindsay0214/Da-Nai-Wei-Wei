@@ -1,6 +1,8 @@
+const Sequelize = require('sequelize');
 const { GeneralError, BadRequestError } = require('../middlewares/error/errors');
 const db = require('../models');
 
+const { Op } = Sequelize;
 const { Product, User } = db;
 
 const productController = {
@@ -97,6 +99,20 @@ const productController = {
     });
     if (!products) throw new BadRequestError('查無資料');
     return res.json({ ok: 1, message: 'success', products });
+  },
+  getMenu: async (req, res) => {
+    const { brandName } = req.params;
+    console.log(brandName);
+    const result = await User.findOne({
+      where: {
+        brand_name: {
+          [Op.like]: `%${brandName}%`,
+        },
+      },
+    });
+    const { id, URL } = result;
+    const products = await Product.findAll({ where: { user_id: id, is_deleted: false } });
+    res.json({ ok: 1, message: 'success', URL, products });
   },
 };
 
