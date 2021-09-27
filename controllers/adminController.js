@@ -17,7 +17,9 @@ const adminController = {
   },
   getShop: async (req, res) => {
     const { id } = req.params;
+    console.log(id);
     const user = await User.findByPk(id);
+    console.log(user);
     if (!user) throw new GeneralError('查無此店家');
     return res.json({ ok: 1, message: 'success', user });
   },

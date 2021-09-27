@@ -23,6 +23,7 @@ const productController = {
   },
   // 新增、編輯
   addProduct: async (req, res) => {
+    const user_id = req.session.userId;
     const { categories, name, price, status } = req.body;
     if (!categories || !name || !price || !status) throw new GeneralError('上面欄位，填好，填滿');
     const newProduct = await Product.create({
@@ -30,6 +31,7 @@ const productController = {
       name,
       price,
       status,
+      user_id,
     });
     if (!newProduct) throw new GeneralError('商品新增失敗');
     return res.json({
@@ -53,6 +55,7 @@ const productController = {
 
   updateProduct: async (req, res) => {
     const { id } = req.params;
+    const user_id = req.session.userId;
     const { categories, name, price, status } = req.body;
     if (!categories || !name || !price || !status) throw new GeneralError('上面欄位，填好，填滿');
     const product = await Product.findOne({
@@ -64,6 +67,7 @@ const productController = {
       name,
       price,
       status,
+      user_id,
     });
     return res.json({
       ok: 1,
@@ -73,7 +77,6 @@ const productController = {
 
   deleteProduct: async (req, res) => {
     const { id } = req.params;
-    console.log(id);
     const product = await Product.findOne({
       where: { id, is_deleted: false },
     });
@@ -85,6 +88,15 @@ const productController = {
       ok: 1,
       message: '刪除商品成功～',
     });
+  },
+  getStoreProducts: async (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    const products = await Product.findAll({
+      where: { user_id: id, is_deleted: false },
+    });
+    if (!products) throw new BadRequestError('查無資料');
+    return res.json({ ok: 1, message: 'success', products });
   },
 };
 

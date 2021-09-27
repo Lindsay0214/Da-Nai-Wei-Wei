@@ -10,7 +10,7 @@ const userController = {
   register: async (req, res) => {
     const role = 'consumer';
     const { nickname, password, email } = req.body;
-    // 空值檢查
+    // 空值檢查;
     if (!email || !nickname || !password || !email.trim() || !nickname.trim() || !password.trim())
       throw new GeneralError('上面欄位，填好，填滿');
     const passwordRegEx = /^(?=.*[0-9!@#$%^&*])(?=.*[a-zA-Z]).{8,16}$/;
@@ -20,9 +20,9 @@ const userController = {
     if (email && email.search(emailRegEx) === -1)
       throw new BadRequestError('信箱格式有誤，請再次確認！');
     const user = await User.findOne({ where: { email } });
-    // 重複帳號檢查
+    // 重複帳號檢查;
     if (user) throw new GeneralError('這個帳號有人用了，換一個吧～');
-    // hash
+    // hash;
     bcrypt.hash(password, saltRounds, async (err, hash) => {
       if (err) throw new GeneralError('唉唷！遇到了一些狀況呢...');
       await User.create({ email, nickname, password: hash, role });
@@ -116,6 +116,51 @@ const userController = {
     if (!user) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
     const { role, email } = user;
     return res.status(200).json({ ok: 1, role, email });
+  },
+  updateURL: async (req, res) => {
+    const { userId } = req.session; // get user id
+    console.log(userId);
+    const { URL } = req.body;
+    console.log(URL);
+    const user = await User.findByPk(userId);
+    console.log(user);
+    if (!user) throw new BadRequestError('查無此筆資料');
+    await user.update({
+      URL,
+    });
+    return res.json({ ok: 1, message: 'URL 更新成功！' });
+  },
+  getShops: async (req, res) => {
+    const shops = await User.findAll({
+      where: { role: 'shop', is_deleted: false },
+    });
+    const data = shops.map((shop) => {
+      return {
+        user_id: shop.dataValues.id,
+        nickname: shop.dataValues.nickname,
+        address: shop.dataValues.address,
+        brand_name: shop.dataValues.brand_name,
+        URL: shop.dataValues.URL,
+      };
+    });
+    if (!data) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
+    return res.json({ ok: 1, message: 'success', data });
+  },
+  getShop: async (req, res) => {
+    const shops = await User.findAll({
+      where: { role: 'shop', is_deleted: false },
+    });
+    const data = shops.map((shop) => {
+      return {
+        user_id: shop.dataValues.id,
+        nickname: shop.dataValues.nickname,
+        address: shop.dataValues.address,
+        brand_name: shop.dataValues.brand_name,
+        URL: shop.dataValues.URL,
+      };
+    });
+    if (!data) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
+    return res.json({ ok: 1, message: 'success', data });
   },
 };
 
