@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 
 router.get(
   '/shops',
-  catchAsyncError(checkPermission('isAdmin')),
+  // catchAsyncError(checkPermission('isAdmin')), // homePage 頁面會用到，先解除封印
   catchAsyncError(adminController.getAllShops)
 );
 router.post(
@@ -37,7 +37,7 @@ router.patch(
 );
 router.get(
   '/shops/:id',
-  catchAsyncError(checkPermission('isAdmin')),
+  catchAsyncError(checkPermission('isAdmin')), // menu 頁面會用到，先解除封印，傳出的資料應該要把密碼拿掉？！
   catchAsyncError(adminController.getShop)
 );
 router.delete(
@@ -53,8 +53,10 @@ router.post('/users/register', catchAsyncError(userController.register));
 router.get('/users/me', catchAsyncError(userController.getMe));
 
 router.get('/users', catchAsyncError(userController.getAllInfo));
+router.get('/users-shops', catchAsyncError(userController.getShops));
 router.get('/user', catchAsyncError(userController.getMyInfo));
 router.patch('/user', catchAsyncError(userController.updateMyInfo));
+router.patch('/user-URL', catchAsyncError(userController.updateURL));
 
 // Products
 router.get(
@@ -69,7 +71,7 @@ router.post(
 );
 router.get(
   '/products/:id',
-  catchAsyncError(checkPermission('isShop')),
+  // catchAsyncError(checkPermission('isShop')), // 這被條擋住，add-to-cart 也要用這個 api
   catchAsyncError(productController.getProduct)
 );
 router.delete(
@@ -82,6 +84,7 @@ router.patch(
   catchAsyncError(checkPermission('isShop')),
   catchAsyncError(productController.updateProduct)
 );
+router.get('/products-store/:id', catchAsyncError(productController.getStoreProducts));
 
 // Global 暫時假資料
 router.get('/products', productController.getProducts);
@@ -105,6 +108,6 @@ router.delete('/order-items', catchAsyncError(orderItemController.deleteOrderIte
 router.get('/order-items', catchAsyncError(orderItemController.getIsPaid));
 
 // Product_detail
-router.post('/product-details', productDetailController.getProductDetail);
+router.get('/product-details/:size/:sweetness/:ice', productDetailController.getProductDetail);
 
 module.exports = router;
