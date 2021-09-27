@@ -110,5 +110,6 @@ const orderItemController = {
       message: '刪除成功',
     });
   },
+  getIsPaid: () => {}, // 這裡開始
 };
 module.exports = orderItemController;
