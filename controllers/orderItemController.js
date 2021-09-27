@@ -6,7 +6,7 @@ const orderItemController = {
   addOrderItem: async (req, res) => {
     try {
       const user_id = req.session.userId;
-      const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: 0 } });
+      const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: false } });
       if (!order_id) {
         return res.status(400).json({
           ok: 0,
@@ -14,6 +14,13 @@ const orderItemController = {
         });
       }
       const { product_id, detail_id, quantity } = req.body;
+      console.log(`add, product_id :${product_id}`);
+      if (quantity <= 0) {
+        res.status(400).json({
+          ok: 0,
+          message: '數量不得為 0 或是負數',
+        });
+      }
       if (!product_id || !detail_id || !quantity) {
         return res.status(400).json({
           ok: 0,
@@ -39,7 +46,7 @@ const orderItemController = {
   },
   getOrderItem: async (req, res, next) => {
     const user_id = req.session.userId;
-    const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: 0 } });
+    const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: false } });
     const result = await Order.findOne({
       where: { id: order_id },
       include: [Order_item], // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
@@ -53,6 +60,7 @@ const orderItemController = {
       const order_item_id = data[i].id;
       // eslint-disable-next-line no-await-in-loop
       const productData = await Product.findByPk(product_id);
+      console.log(`productData: ${productData}`);
       const productDetail = await Product_detail.findByPk(detail_id);
       const { ice, sweetness, size } = productDetail;
       if (!productData) throw new BadRequestError('查無此筆資料');
@@ -93,6 +101,12 @@ const orderItemController = {
   },
   updateOrderItem: async (req, res) => {
     const { id, detail_id, quantity } = req.body;
+    if (quantity <= 0) {
+      res.status(400).json({
+        ok: 0,
+        message: '數量不得為 0 或是負數',
+      });
+    }
     if (!id || !detail_id || !quantity)
       throw new GeneralError('order_item 的 id 或 detail_id 或 quantity 沒有填寫');
     await Order_item.update({ detail_id, quantity }, { where: { id } });
