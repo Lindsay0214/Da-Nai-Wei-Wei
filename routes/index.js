@@ -107,6 +107,6 @@ router.patch('/order-items', catchAsyncError(orderItemController.updateOrderItem
 router.delete('/order-items', catchAsyncError(orderItemController.deleteOrderItem));
 
 // Product_detail
-router.post('/product-details', productDetailController.getProductDetail);
+router.get('/product-details/:size/:sweetness/:ice', productDetailController.getProductDetail);
 
 module.exports = router;
