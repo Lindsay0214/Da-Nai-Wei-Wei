@@ -125,7 +125,23 @@ const userController = {
     });
     return res.json({ ok: 1, message: 'URL 更新成功！' });
   },
-  getStores: async (req, res) => {
+  getShops: async (req, res) => {
+    const shops = await User.findAll({
+      where: { role: 'shop', is_deleted: false },
+    });
+    const data = shops.map((shop) => {
+      return {
+        user_id: shop.dataValues.id,
+        nickname: shop.dataValues.nickname,
+        address: shop.dataValues.address,
+        brand_name: shop.dataValues.brand_name,
+        URL: shop.dataValues.URL,
+      };
+    });
+    if (!data) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
+    return res.json({ ok: 1, message: 'success', data });
+  },
+  getShop: async (req, res) => {
     const shops = await User.findAll({
       where: { role: 'shop', is_deleted: false },
     });

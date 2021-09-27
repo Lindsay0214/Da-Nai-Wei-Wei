@@ -77,7 +77,6 @@ const productController = {
 
   deleteProduct: async (req, res) => {
     const { id } = req.params;
-    console.log(id);
     const product = await Product.findOne({
       where: { id, is_deleted: false },
     });
@@ -89,6 +88,15 @@ const productController = {
       ok: 1,
       message: '刪除商品成功～',
     });
+  },
+  getStoreProducts: async (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    const products = await Product.findAll({
+      where: { user_id: id, is_deleted: false },
+    });
+    if (!products) throw new BadRequestError('查無資料');
+    return res.json({ ok: 1, message: 'success', products });
   },
 };
 
