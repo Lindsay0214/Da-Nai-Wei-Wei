@@ -37,7 +37,7 @@ router.patch(
 );
 router.get(
   '/shops/:id',
-  catchAsyncError(checkPermission('isAdmin')), // menu 頁面會用到，先解除封印，傳出的資料應該要把密碼拿掉？！
+  // catchAsyncError(checkPermission('isAdmin')), // menu 頁面會用到，先解除封印，傳出的資料應該要把密碼拿掉？！
   catchAsyncError(adminController.getShop)
 );
 router.delete(
