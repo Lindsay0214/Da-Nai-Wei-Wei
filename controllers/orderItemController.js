@@ -124,19 +124,5 @@ const orderItemController = {
       message: '刪除成功',
     });
   },
-
-  getIsPaid: async (req, res) => {
-    const user_id = req.session.userId;
-    if (!user_id) throw new GeneralError('id 沒有填寫');
-    const result = await Order.findOne({
-      where: user_id,
-      is_paid: true,
-    });
-    if (!result) throw new GeneralError('執行付款中...');
-    return res.json({
-      ok: 1,
-      message: '付款成功！',
-    });
-  },
 };
 module.exports = orderItemController;
