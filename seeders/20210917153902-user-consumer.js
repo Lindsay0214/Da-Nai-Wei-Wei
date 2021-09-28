@@ -132,7 +132,7 @@ module.exports = {
         updatedAt: '2021-09-28 06:05:45',
       },
       {
-        nickname: '00',
+        nickname: '0',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
         email: '0@gmail.com',
         creditcard: '0000-0000-0000-0000',
