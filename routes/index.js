@@ -98,6 +98,7 @@ router.get('/orders', catchAsyncError(orderController.getOrder));
 router.get('/orders-history', catchAsyncError(orderController.getOrdersHistory));
 router.patch('/orders', catchAsyncError(orderController.updateShoppingCart));
 router.delete('/orders', catchAsyncError(orderController.deleteShoppingCart));
+router.get('/orders-get-is-paid', catchAsyncError(orderController.getIsPaid));
 
 // Order_item
 router.post('/order-items', catchAsyncError(orderItemController.addOrderItem));
