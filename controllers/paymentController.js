@@ -26,7 +26,6 @@ const onTimeValue = function () {
 };
 const paymentController = {
   addOrder: async (req, res) => {
-    console.log(123);
     const uid = nanoid(20);
     const user_id = req.session.userId;
     const { id: order_id } = await Order.findOne({ where: { user_id } });
@@ -88,7 +87,6 @@ const paymentController = {
       paymentType: paymentType,
       tradeAmt: tradeAmt,
     };
-    console.log(paymentInfo);
     if (rtnMsg === '交易成功') {
       // 這部分可與資料庫做互動
       const target = await Order.findOne({ where: { uid: merchantTradeNo } });

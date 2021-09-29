@@ -6,7 +6,6 @@ const productDetailController = {
   // addShoppingCart: async (req, res) => {
   //   try {
   //     const user_id = req.session.userId;
-  //     console.log(user_id);
   //     const result = await Order.findOrCreate({
   //       where: { user_id },
   //       defaults: {
