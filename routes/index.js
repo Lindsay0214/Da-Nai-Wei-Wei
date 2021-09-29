@@ -37,7 +37,7 @@ router.patch(
 );
 router.get(
   '/shops/:id',
-  catchAsyncError(checkPermission('isAdmin')), // menu 頁面會用到，先解除封印，傳出的資料應該要把密碼拿掉？！
+  // catchAsyncError(checkPermission('isAdmin')), // menu 頁面會用到，先解除封印，傳出的資料應該要把密碼拿掉？！
   catchAsyncError(adminController.getShop)
 );
 router.delete(
@@ -99,6 +99,8 @@ router.get('/orders', catchAsyncError(orderController.getOrder));
 router.get('/orders-history', catchAsyncError(orderController.getOrdersHistory));
 router.patch('/orders', catchAsyncError(orderController.updateShoppingCart));
 router.delete('/orders', catchAsyncError(orderController.deleteShoppingCart));
+router.get('/orders-get-is-paid/:order_id', catchAsyncError(orderController.getIsPaid));
+router.get('/orders/:orderId', catchAsyncError(orderController.getOrderPaid));
 
 // Order_item
 router.post('/order-items', catchAsyncError(orderItemController.addOrderItem));

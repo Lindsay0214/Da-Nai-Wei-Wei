@@ -93,7 +93,6 @@ const productController = {
   },
   getStoreProducts: async (req, res) => {
     const { id } = req.params;
-    console.log(id);
     const products = await Product.findAll({
       where: { user_id: id, is_deleted: false },
     });

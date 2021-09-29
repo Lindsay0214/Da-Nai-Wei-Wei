@@ -114,16 +114,14 @@ const userController = {
     const { userId } = req.session; // get user id
     const user = await User.findByPk(userId);
     if (!user) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
-    const { role, email } = user;
-    return res.status(200).json({ ok: 1, role, email });
+    const { role, email, nickname } = user;
+    return res.status(200).json({ ok: 1, role, email, nickname });
   },
   updateURL: async (req, res) => {
     const { userId } = req.session; // get user id
-    console.log(userId);
     const { URL } = req.body;
     console.log(URL);
     const user = await User.findByPk(userId);
-    console.log(user);
     if (!user) throw new BadRequestError('查無此筆資料');
     await user.update({
       URL,

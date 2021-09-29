@@ -126,5 +126,53 @@ const orderController = {
       message: '刪除成功',
     });
   },
+
+  getIsPaid: async (req, res) => {
+    const user_id = req.session.userId;
+    const { order_id } = req.params;
+    if (!user_id) throw new GeneralError('id 沒有填寫');
+    const result = await Order.findOne({
+      where: {
+        user_id,
+        is_paid: true,
+        id: order_id,
+      },
+    });
+    if (!result) throw new GeneralError('執行付款中...');
+    return res.json({
+      ok: 1,
+      message: '付款成功！',
+      result,
+    });
+  },
+  getOrderPaid: async (req, res) => {
+    const user_id = req.session.userId;
+    const { orderId } = req.params;
+
+    const result = await Order.findOne({
+      where: { user_id, is_paid: 1, id: orderId },
+      include: [User],
+    });
+    const { nickname, email } = result.User;
+    if (!result) throw new BadRequestError('查無此筆資料');
+    if (result === null) {
+      return res.json({
+        ok: 1,
+        message: '這個 user_id 還沒有購物車',
+      });
+    }
+    const { id, status, item_count, total_price, is_paid } = result.dataValues;
+    return res.json({
+      ok: 1,
+      message: '找到了，有一筆符合的資料',
+      order_id: id, // order 這張表格裡面的 id
+      status, // order 這張表格裡面的 status
+      item_count, // order 這張表格裡面的 item_count
+      total_price, // order 這張表格裡面的 total_price
+      is_paid, // order 這張表格裡面的 is_paid
+      nickname,
+      email,
+    });
+  },
 };
 module.exports = orderController;
