@@ -119,11 +119,9 @@ const userController = {
   },
   updateURL: async (req, res) => {
     const { userId } = req.session; // get user id
-    console.log(userId);
     const { URL } = req.body;
     console.log(URL);
     const user = await User.findByPk(userId);
-    console.log(user);
     if (!user) throw new BadRequestError('查無此筆資料');
     await user.update({
       URL,
