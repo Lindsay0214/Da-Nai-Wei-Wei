@@ -1,7 +1,5 @@
-'use strict';
-
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     return queryInterface.bulkInsert('Users', [
       {
         id: 1000,
@@ -19,7 +17,7 @@ module.exports = {
         id: 1001,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'b@gmail.com',
+        email: '50lan@gmail.com',
         creditcard: '0000-0000-0000-0222',
         address: '台北市快樂區無常街222號3樓',
         brand_name: '50嵐',
@@ -31,7 +29,7 @@ module.exports = {
         id: 1002,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'c@gmail.com',
+        email: '1002@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
@@ -43,7 +41,7 @@ module.exports = {
         id: 1003,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'd@gmail.com',
+        email: '1003@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
@@ -55,7 +53,7 @@ module.exports = {
         id: 1004,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'e@gmail.com',
+        email: '1004@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
@@ -67,7 +65,7 @@ module.exports = {
         id: 1005,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'f@gmail.com',
+        email: '1005@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
@@ -79,7 +77,7 @@ module.exports = {
         id: 1006,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'g@gmail.com',
+        email: '1006@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
@@ -90,8 +88,7 @@ module.exports = {
       {
         id: 1007,
         nickname: '',
-        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'h@gmail.com',
+        email: '1007@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
@@ -101,8 +98,7 @@ module.exports = {
       },
     ]);
   },
-
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     return queryInterface.bulkDelete('Users', null, {});
   },
 };
