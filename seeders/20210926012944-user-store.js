@@ -88,6 +88,7 @@ module.exports = {
       {
         id: 1007,
         nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
         email: '1007@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
