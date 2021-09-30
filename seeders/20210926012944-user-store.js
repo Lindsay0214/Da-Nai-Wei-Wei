@@ -1,7 +1,5 @@
-'use strict';
-
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     return queryInterface.bulkInsert('Users', [
       {
         id: 1000,
@@ -19,7 +17,7 @@ module.exports = {
         id: 1001,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: '5@gmail.com',
+        email: '50lan@gmail.com',
         creditcard: '0000-0000-0000-0222',
         address: '台北市快樂區無常街222號3樓',
         brand_name: '50嵐',
@@ -31,7 +29,7 @@ module.exports = {
         id: 1002,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'n@gmail.com',
+        email: '1002@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
@@ -39,10 +37,100 @@ module.exports = {
         createdAt: '2021-09-10 06:05:45',
         updatedAt: '2021-09-18 06:05:45',
       },
+      {
+        id: 1003,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1003@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '茶涎',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
+      {
+        id: 1004,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1004@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '水巷茶弄',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
+      {
+        id: 1005,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1005@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '約翰紅茶',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
+      {
+        id: 1006,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1006@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '龜記',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
+      {
+        id: 1007,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1007@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '茶室比亞',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
     ]);
   },
-
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     return queryInterface.bulkDelete('Users', null, {});
   },
 };
+
+INSERT INTO `Users` (`id`, `nickname`, `password`, `email`, `role`, `creditcard`, `address`, `brand_name`, `URL`, `createdAt`, `updatedAt`, `is_deleted`)
+VALUES
+	(1000, '', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'c@gmail.com', 'shop', '0000-0000-0000-0111', '台北市快樂區無常街111號3樓', '麻谷茶坊', NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1001, '', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', '50lan@gmail.com', 'shop', '0000-0000-0000-0222', '台北市快樂區無常街222號3樓', '50嵐', NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1002, '', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', '1002@gmail.com', 'shop', '0000-0000-0000-0444', '台北市快樂區無常街444號3樓', '迷客夏', NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1003, '', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', '1003@gmail.com', 'shop', '0000-0000-0000-0444', '台北市快樂區無常街444號3樓', '茶涎', NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1004, '', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', '1004@gmail.com', 'shop', '0000-0000-0000-0444', '台北市快樂區無常街444號3樓', '水巷茶弄', NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1005, '', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', '1005@gmail.com', 'shop', '0000-0000-0000-0444', '台北市快樂區無常街444號3樓', '約翰紅茶', NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1006, '', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', '1006@gmail.com', 'shop', '0000-0000-0000-0444', '台北市快樂區無常街444號3樓', '龜記', NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1007, '', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', '1007@gmail.com', 'shop', '0000-0000-0000-0444', '台北市快樂區無常街444號3樓', '茶室比亞', NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1063, 'John Doe', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'JohnDoe@gmail.com', 'consumer', '0000-0000-0000-0111', '台北市快樂區無常街111號3樓', NULL, NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1064, 'Pablo Murphy', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'PabloMurphy@gmail.com', 'consumer', '0000-0000-0000-0222', '台北市快樂區無常街222號3樓', NULL, NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1065, 'Devin McMahon', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'DevinMcMahon@gmail.com', 'consumer', '0000-0000-0000-0333', '台北市快樂區無常街333號3樓', NULL, NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1066, 'Brendan Hall', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'BrendanHall@gmail.com', 'consumer', '0000-0000-0000-0444', '台北市快樂區無常街444號3樓', NULL, NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1067, 'Carly McQueen', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'CarlyMcQueen@gmail.com', 'consumer', '0000-0000-0000-0555', '台北市快樂區無常街555號3樓', NULL, NULL, '2021-09-10 06:05:45', '2021-09-18 06:05:45', 0),
+	(1068, 'Guerrero', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Guerrero@gmail.com', 'consumer', '0000-0000-0000-0000', '台北市快樂區無常街22號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1069, 'Graver', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Graver@gmail.com', 'consumer', '0000-0000-0000-0666', '台北市快樂區無常街666號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1070, 'Warner', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Warner@gmail.com', 'consumer', '0000-0000-0000-0777', '台北市快樂區無常街777號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1071, 'Paul', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Paul@gmail.com', 'consumer', '0000-0000-0000-0888', '台北市快樂區無常街888號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1072, 'Hunter Hopper', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Hunter@gmail.com', 'consumer', '0000-0000-0000-0999', '台北市快樂區無常街999號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1073, 'Griffin', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Griffin@gmail.com', 'consumer', '0000-0000-0000-1010', '台北市快樂區無常街101010號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1074, 'Molly Blanchard', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'MollyBlanchard@gmail.com', 'consumer', '0000-0000-0000-1111', '台北市快樂區無常街1111號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1075, 'Noelle Blackwood', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'NoelleBlackwood@gmail.com', 'consumer', '0000-0000-0000-1212', '台北市快樂區無常街1212號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1076, '0', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', '0@gmail.com', 'consumer', '0000-0000-0000-0000', '台北市小樹屋區微笑街000號整棟', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1077, 'Harry', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'harry@gmail.com', 'consumer', '0000-0000-0011-1111', '台北市小樹屋區微笑街黃金屋2號', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1078, 'Hsuan', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'hsuan@gmail.com', 'consumer', '0000-0000-0022-2222', '台北市小樹屋區微笑街狗屋', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1079, 'Jason', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'jason5225@gmail.com', 'consumer', '0000-0000-0033-3333', '台北市小樹屋區微笑街黃金屋2號', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1080, 'Caroline', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Caroline@gmail.com', 'consumer', '0000-0000-0212-0000', '台北市快樂區無常街212號212樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1081, 'Mindy', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Mindy@gmail.com', 'consumer', '0000-0000-0213-0000', '台北市快樂區無常街213號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0),
+	(1082, 'Brittany', '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu', 'Brittany@gmail.com', 'consumer', '0000-0000-0214-0000', '台北市快樂區無常街214號3樓', NULL, NULL, '2021-09-18 06:05:45', '2021-09-28 06:05:45', 0);
