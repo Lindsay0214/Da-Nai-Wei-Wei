@@ -15,7 +15,7 @@ const userController = {
       throw new GeneralError('上面欄位，填好，填滿');
     const passwordRegEx = /^(?=.*[0-9!@#$%^&*])(?=.*[a-zA-Z]).{8,16}$/;
     if (password && password.search(passwordRegEx) === -1)
-      throw new BadRequestError('密碼格式有誤，請再次確認！');
+      throw new BadRequestError('密碼格式有誤，請再次確認！需要 8~16 位英數混合');
     const emailRegEx = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     if (email && email.search(emailRegEx) === -1)
       throw new BadRequestError('信箱格式有誤，請再次確認！');
@@ -41,7 +41,7 @@ const userController = {
     if (!user) throw new BadRequestError('再檢查一下，有地方填錯囉！');
     // hash
     const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) throw new BadRequestError('再檢查一下，有地方填錯囉！');
+    if (!validPassword) throw new BadRequestError('再檢查一下，帳號或是密碼打錯囉！');
     req.session.userId = user.id;
     req.session.role = user.role;
     res.json({ ok: 1, role: user.role });
@@ -105,11 +105,6 @@ const userController = {
     });
     return res.json({ ok: 1, message: '個人資料修改成功囉！' });
   },
-  // requireLogin: async (req, res) => {
-  //   const { userId } = req.session;
-  //   const user = await User.findByPk(userId);
-  //   return res.json({ ok: 1, message: 'success', user });
-  // },
   getMe: async (req, res) => {
     const { userId } = req.session; // get user id
     const user = await User.findByPk(userId);
