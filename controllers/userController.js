@@ -44,7 +44,8 @@ const userController = {
     if (!validPassword) throw new BadRequestError('再檢查一下，帳號或是密碼打錯囉！');
     req.session.userId = user.id;
     req.session.role = user.role;
-    res.json({ ok: 1, role: user.role });
+    req.session.nickname = user.nickname;
+    res.json({ ok: 1, role: user.role, nickname: user.nickname });
   },
 
   logout: (req, res) => {
@@ -72,16 +73,7 @@ const userController = {
   updateMyInfo: async (req, res) => {
     const { userId } = req.session; // get user id
     const { nickname, email, address, creditCard } = req.body;
-    if (
-      !nickname ||
-      !email ||
-      !address ||
-      !creditCard ||
-      !nickname.trim() ||
-      !email.trim() ||
-      !address.trim() ||
-      !creditCard.trim()
-    )
+    if (!nickname || !email || !address || !creditCard)
       throw new GeneralError('上面欄位，填好，填滿');
     const creditCardRegEx = /\d{4}-?\d{4}-?\d{4}-?\d{4}/g; // 先用最基本的
     if (creditCard && creditCard.search(creditCardRegEx) === -1)
@@ -112,6 +104,7 @@ const userController = {
     const { role, email, nickname } = user;
     return res.status(200).json({ ok: 1, role, email, nickname });
   },
+
   updateURL: async (req, res) => {
     const { userId } = req.session; // get user id
     const { URL } = req.body;
@@ -123,6 +116,7 @@ const userController = {
     });
     return res.json({ ok: 1, message: 'URL 更新成功！' });
   },
+
   getShops: async (req, res) => {
     const shops = await User.findAll({
       where: { role: 'shop', is_deleted: false },
@@ -139,6 +133,7 @@ const userController = {
     if (!data) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
     return res.json({ ok: 1, message: 'success', data });
   },
+
   getShop: async (req, res) => {
     const shops = await User.findAll({
       where: { role: 'shop', is_deleted: false },
