@@ -1,13 +1,11 @@
-'use strict';
-
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     return queryInterface.bulkInsert('Users', [
       {
         id: 1000,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'c@gmail.com',
+        email: 'a@gmail.com',
         creditcard: '0000-0000-0000-0111',
         address: '台北市快樂區無常街111號3樓',
         role: 'shop',
@@ -19,7 +17,7 @@ module.exports = {
         id: 1001,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: '5@gmail.com',
+        email: '50lan@gmail.com',
         creditcard: '0000-0000-0000-0222',
         address: '台北市快樂區無常街222號3樓',
         brand_name: '50嵐',
@@ -31,7 +29,7 @@ module.exports = {
         id: 1002,
         nickname: '',
         password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
-        email: 'n@gmail.com',
+        email: '1002@gmail.com',
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
@@ -39,10 +37,69 @@ module.exports = {
         createdAt: '2021-09-10 06:05:45',
         updatedAt: '2021-09-18 06:05:45',
       },
+      {
+        id: 1003,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1003@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '茶涎',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
+      {
+        id: 1004,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1004@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '水巷茶弄',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
+      {
+        id: 1005,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1005@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '約翰紅茶',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
+      {
+        id: 1006,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1006@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '龜記',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
+      {
+        id: 1007,
+        nickname: '',
+        password: '$2b$10$TYObVm4oh9XZmwH1Is/ZbO6sygo9zfdsWXPP/M9nNSPvAbJd9IUPu',
+        email: '1007@gmail.com',
+        creditcard: '0000-0000-0000-0444',
+        address: '台北市快樂區無常街444號3樓',
+        role: 'shop',
+        brand_name: '茶室比亞',
+        createdAt: '2021-09-10 06:05:45',
+        updatedAt: '2021-09-18 06:05:45',
+      },
     ]);
   },
-
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     return queryInterface.bulkDelete('Users', null, {});
   },
 };
