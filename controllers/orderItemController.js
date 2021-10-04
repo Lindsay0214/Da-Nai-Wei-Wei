@@ -45,9 +45,13 @@ const orderItemController = {
   },
   getOrderItem: async (req, res, next) => {
     const user_id = req.session.userId;
-    const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: false } });
+    const firstResult = await Order.findOne({ where: { user_id, is_paid: false } });
+    if (!firstResult) {
+      return;
+    }
+    const { id } = firstResult;
     const result = await Order.findOne({
-      where: { id: order_id },
+      where: { id },
       include: [Order_item], // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
     });
     if (!result) throw new BadRequestError('查無此筆資料');
