@@ -61,7 +61,7 @@ const orderController = {
   getOrdersHistory: async (req, res) => {
     const user_id = req.session.userId;
     const result = await Order.findAll({
-      where: { user_id },
+      where: { user_id, is_paid: true },
       order: [['id', 'DESC']],
     });
     const data = [];
@@ -148,7 +148,6 @@ const orderController = {
   getOrderPaid: async (req, res) => {
     const user_id = req.session.userId;
     const { orderId } = req.params;
-
     const result = await Order.findOne({
       where: { user_id, is_paid: 1, id: orderId },
       include: [User],
