@@ -101,11 +101,7 @@ router.get(
   catchAsyncError(checkPermission('isConsumer')),
   catchAsyncError(paymentController.addOrder)
 );
-router.post(
-  '/result',
-  catchAsyncError(checkPermission('isConsumer')),
-  catchAsyncError(paymentController.paymentResult)
-);
+router.post('/result', catchAsyncError(paymentController.paymentResult));
 router.get(
   '/orders',
   catchAsyncError(checkPermission('isConsumer')),
