@@ -78,6 +78,7 @@ const orderItemController = {
       message: '查詢成功',
       data,
       productInfo,
+      count: data.length,
     });
   },
   getSingleOrderItem: async (req, res, next) => {
