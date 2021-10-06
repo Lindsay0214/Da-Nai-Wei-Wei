@@ -122,5 +122,26 @@ const orderItemController = {
       message: '刪除成功',
     });
   },
+
+  getOrderHistory: async (req, res) => {
+    const { orderId } = req.params;
+    const ordersBelowCart = await Order_item.findAll({
+      where: { order_id: orderId },
+      include: [Product],
+    });
+    const targetProductArr = [];
+    if (!ordersBelowCart) throw new BadRequestError('查無此筆購物車資料，請稍候再重新整理');
+    for (let i = 0; i < ordersBelowCart.length; i += 1) {
+      targetProductArr.push({
+        name: ordersBelowCart[i].dataValues.Product.name,
+        price: ordersBelowCart[i].dataValues.Product.price,
+      });
+    }
+    return res.json({
+      ok: 1,
+      message: '查詢成功',
+      targetProductArr,
+    });
+  },
 };
 module.exports = orderItemController;

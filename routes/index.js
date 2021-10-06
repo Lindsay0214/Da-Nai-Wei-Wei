@@ -10,6 +10,7 @@ const checkPermission = require('../middlewares/checkPermission');
 const userController = require('../controllers/userController');
 const paymentController = require('../controllers/paymentController');
 const productDetailController = require('../controllers/productDetailController');
+const productHistoryController = require('../controllers/productHistoryController');
 const { catchAsyncError } = require('../middlewares/error/errors');
 
 router.get('/', (req, res) => {
@@ -159,12 +160,24 @@ router.delete(
   catchAsyncError(checkPermission('isConsumer')),
   catchAsyncError(orderItemController.deleteOrderItem)
 );
+router.get(
+  '/order-items/:orderId',
+  // catchAsyncError(checkPermission('isConsumer')),
+  catchAsyncError(orderItemController.getOrderHistory)
+);
 
 // Product_detail
 router.get(
   '/product-details/:size/:sweetness/:ice',
   catchAsyncError(checkPermission('isConsumer')),
   productDetailController.getProductDetail
+);
+
+// Product_history
+router.post(
+  '/product-history',
+  // catchAsyncError(checkPermission('isConsumer')),
+  productHistoryController.addProductHistory
 );
 
 module.exports = router;
