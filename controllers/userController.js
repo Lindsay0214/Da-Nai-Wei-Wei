@@ -109,7 +109,7 @@ const userController = {
     const { userId } = req.session; // get user id
     const { URL } = req.body;
     console.log(URL);
-    const user = await User.findOne({ where: { user, role: 'shop' } });
+    const user = await User.findOne({ where: { user: userId, role: 'shop' } });
     if (!user) throw new BadRequestError('查無此筆資料');
     await user.update({
       URL,
