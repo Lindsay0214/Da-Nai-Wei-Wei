@@ -46,8 +46,13 @@ const orderItemController = {
   getOrderItem: async (req, res, next) => {
     const user_id = req.session.userId;
     const firstResult = await Order.findOne({ where: { user_id, is_paid: false } });
+    console.log(firstResult);
     if (!firstResult) {
-      return;
+      return res.json({
+        ok: 1,
+        message: '查詢成功',
+        count: 0,
+      });
     }
     const { id } = firstResult;
     const result = await Order.findOne({
