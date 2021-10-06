@@ -105,7 +105,7 @@ module.exports = {
         creditcard: '0000-0000-0000-0444',
         address: '台北市快樂區無常街444號3樓',
         role: 'shop',
-        brand_name: '清心',
+        brand_name: '清心福全',
         createdAt: '2021-09-10 06:05:45',
         updatedAt: '2021-09-18 06:05:45',
       },
