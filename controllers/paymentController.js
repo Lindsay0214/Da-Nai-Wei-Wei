@@ -1,5 +1,5 @@
 /* eslint-disable new-cap */
-const { nanoid } = require('nanoid');
+const { customAlphabet } = require('nanoid');
 const db = require('../models');
 const ecpay_payment = require('../node_modules/ecpay_aio_nodejs/lib/ecpay_payment');
 const options = require('../node_modules/ecpay_aio_nodejs/conf/config-example');
@@ -26,14 +26,18 @@ const onTimeValue = function () {
 };
 const paymentController = {
   addOrder: async (req, res) => {
-    const uid = nanoid(20);
+    const nanoid = customAlphabet(process.env.RANDOM, 20);
+    const uid = nanoid();
     const user_id = req.session.userId;
-    const { id: order_id } = await Order.findOne({ where: { user_id } });
+    const { id: order_id } = await Order.findOne({ where: { user_id, is_paid: false } });
     const result = await Order.findOne({
       where: { id: order_id },
       include: [Order_item], // 在 Order_item 這張表格裡面，找出 order_id 吻合的全部資料
     });
     if (!result) throw new BadRequestError('查無此筆資料');
+    await result.update({
+      uid,
+    });
     const data = result.Order_items;
     const productInfo = [];
     for (let i = 0; i < data.length; i += 1) {
@@ -57,16 +61,13 @@ const paymentController = {
       TotalAmount: `${result.total_price}`,
       TradeDesc: '感謝您的訂購',
       ItemName,
-      ReturnURL: 'http://localhost:3000/result', // 付款結果通知URL
+      ReturnURL: 'https://da-nai-wei-wei.herokuapp.com/result', // 付款結果通知URL
     };
     const create = new ecpay_payment(options);
     let parameters = {};
     const htm = create.payment_client.aio_check_out_credit_onetime((parameters = base_param));
     if (!htm) throw new BadRequestError('查無此筆資料');
     res.send(htm);
-    result.update({
-      uid,
-    });
   },
 
   paymentResult: async (req, res) => {
@@ -87,11 +88,13 @@ const paymentController = {
       paymentType: paymentType,
       tradeAmt: tradeAmt,
     };
+    console.log(paymentInfo);
     if (rtnMsg === '交易成功') {
       // 這部分可與資料庫做互動
       const target = await Order.findOne({ where: { uid: merchantTradeNo } });
-      target.update({ is_paid: true });
+      return target.update({ is_paid: true });
     }
+    res.json({ rtnMsg });
   },
 };
 
