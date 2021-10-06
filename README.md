@@ -2,8 +2,7 @@
 
 #### 大奶微微，你訂飲料の大平台。
 
-
-↳ [專案連結點這](https://test.d3v2d5gigfl1ab.amplifyapp.com/)
+↳ [專案連結點這](https://dev.d318dyc2vbskcy.amplifyapp.com/)
 
 ## 專案簡介
 
@@ -13,7 +12,7 @@
 
 ## 專案目標
 
-Clone [你訂](https://order.nidin.shop/)的部份功能
+Clone [你訂](https://order.nidin.shop/)部份功能的線上訂購飲料平台。
 
 ## 使用技術
 
@@ -27,6 +26,28 @@ Clone [你訂](https://order.nidin.shop/)的部份功能
   - `dotenv`：設置環境變數
 - API
   - Imgur API
+
+## 如何本地端執行
+
+0. 本地端要有 Express、Sequelize、Git、SQL 環境
+1. 在此頁面下載壓縮檔或 clone 到本地（連同[前端](https://github.com/Lindsay0214/Da-Nai-Wei-Wei-front-end/edit/dev/README.md)專案）
+2. `npm install` 安裝專案所需套件
+3. `npx sequelize db:create` 建立資料庫
+4. 使用 migrate 跟 seeder 建立資料與範例
+```
+npx sequelize db:migrate
+npx sequelize db:seed:all
+```
+5. `npm start` 執行專案（連同前端專案一併操作）
+
+以下提供測試用的帳號密碼：
+
+| Name     | email           | password | 權限      |
+| -------- | --------------- | -------- | -------- |
+| Admin    | admin@gmail.com | Admin000 | 最高權限  |
+| Shop     | 1002@gmail.com  | 0        | 店家     |
+| Consumer | 00@gmail.com    | Aa000000 | 使用者   |
+
 
 ## 專案規劃文件
 

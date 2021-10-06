@@ -65,6 +65,7 @@ const userController = {
 
   getMyInfo: async (req, res) => {
     const { userId } = req.session; // get user id
+    console.log('-------userId--------', userId);
     const user = await User.findByPk(userId);
     if (!user) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
     return res.status(200).json({ ok: 1, data: user });
@@ -109,7 +110,7 @@ const userController = {
     const { userId } = req.session; // get user id
     const { URL } = req.body;
     console.log(URL);
-    const user = await User.findOne({ where: { user, role: 'shop' } });
+    const user = await User.findOne({ where: { user: userId, role: 'shop' } });
     if (!user) throw new BadRequestError('查無此筆資料');
     await user.update({
       URL,
