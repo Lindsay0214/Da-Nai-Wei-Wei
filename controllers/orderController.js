@@ -65,6 +65,7 @@ const orderController = {
       order: [['id', 'DESC']],
     });
     const data = [];
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < result.length; i++) {
       data.push(result[i].dataValues);
     }

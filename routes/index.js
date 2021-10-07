@@ -163,7 +163,7 @@ router.delete(
 );
 router.get(
   '/order-items/:orderId',
-  // catchAsyncError(checkPermission('isConsumer')),
+  catchAsyncError(checkPermission('isConsumer')),
   catchAsyncError(orderItemController.getOrderHistory)
 );
 
@@ -177,7 +177,7 @@ router.get(
 // Product_history
 router.post(
   '/product-history',
-  // catchAsyncError(checkPermission('isConsumer')),
+  catchAsyncError(checkPermission('isConsumer')),
   productHistoryController.addProductHistory
 );
 
