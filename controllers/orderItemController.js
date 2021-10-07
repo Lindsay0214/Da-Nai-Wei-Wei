@@ -68,6 +68,7 @@ const orderItemController = {
       const order_item_id = data[i].id;
       // eslint-disable-next-line no-await-in-loop
       const productData = await Product.findByPk(product_id);
+      // eslint-disable-next-line no-await-in-loop
       const productDetail = await Product_detail.findByPk(detail_id);
       const { ice, sweetness, size } = productDetail;
       if (!productData) throw new BadRequestError('查無此筆資料');
@@ -129,6 +130,27 @@ const orderItemController = {
     return res.json({
       ok: 1,
       message: '刪除成功',
+    });
+  },
+
+  getOrderHistory: async (req, res) => {
+    const { orderId } = req.params;
+    const ordersBelowCart = await Order_item.findAll({
+      where: { order_id: orderId },
+      include: [Product],
+    });
+    const targetProductArr = [];
+    if (!ordersBelowCart) throw new BadRequestError('查無此筆購物車資料，請稍候再重新整理');
+    for (let i = 0; i < ordersBelowCart.length; i += 1) {
+      targetProductArr.push({
+        name: ordersBelowCart[i].dataValues.Product.name,
+        price: ordersBelowCart[i].dataValues.Product.price,
+      });
+    }
+    return res.json({
+      ok: 1,
+      message: '查詢成功',
+      targetProductArr,
     });
   },
 };
