@@ -90,6 +90,7 @@ router.get('/products-store/:id', catchAsyncError(productController.getStoreProd
 // Global 暫時假資料
 router.get('/products', productController.getProducts);
 router.get('/shops', productController.getShops);
+router.get('/menu/:brandName', productController.getMenu);
 
 // Order
 router.post(
