@@ -68,6 +68,7 @@ const orderItemController = {
       const order_item_id = data[i].id;
       // eslint-disable-next-line no-await-in-loop
       const productData = await Product.findByPk(product_id);
+      // eslint-disable-next-line no-await-in-loop
       const productDetail = await Product_detail.findByPk(detail_id);
       const { ice, sweetness, size } = productDetail;
       if (!productData) throw new BadRequestError('查無此筆資料');
