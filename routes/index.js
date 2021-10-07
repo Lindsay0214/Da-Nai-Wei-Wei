@@ -180,5 +180,10 @@ router.post(
   catchAsyncError(checkPermission('isConsumer')),
   productHistoryController.addProductHistory
 );
+router.get(
+  '/product-history/:orderId',
+  catchAsyncError(checkPermission('isConsumer')),
+  productHistoryController.getProductHistory
+);
 
 module.exports = router;
