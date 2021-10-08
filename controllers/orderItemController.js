@@ -170,7 +170,7 @@ const orderItemController = {
         quantity: ordersBelowCart[i].dataValues.quantity,
       });
     }
-    console.log(targetProductArr);
+
     return res.json({
       ok: 1,
       message: '查詢成功',
