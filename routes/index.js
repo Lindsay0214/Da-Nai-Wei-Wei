@@ -162,9 +162,9 @@ router.delete(
   catchAsyncError(orderItemController.deleteOrderItem)
 );
 router.get(
-  '/order-items/:orderId',
+  '/order/:orderId',
   catchAsyncError(checkPermission('isConsumer')),
-  catchAsyncError(orderItemController.getOrderHistory)
+  catchAsyncError(orderItemController.getItemsByOrderId)
 );
 
 // Product_detail

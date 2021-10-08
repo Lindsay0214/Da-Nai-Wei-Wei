@@ -46,7 +46,6 @@ const orderItemController = {
   getOrderItem: async (req, res, next) => {
     const user_id = req.session.userId;
     const firstResult = await Order.findOne({ where: { user_id, is_paid: false } });
-    console.log(firstResult);
     if (!firstResult) {
       return res.json({
         ok: 1,
@@ -133,7 +132,7 @@ const orderItemController = {
     });
   },
 
-  getOrderHistory: async (req, res) => {
+  getItemsByOrderId: async (req, res) => {
     const { orderId } = req.params;
     const ordersBelowCart = await Order_item.findAll({
       where: { order_id: orderId },
@@ -145,6 +144,7 @@ const orderItemController = {
       targetProductArr.push({
         name: ordersBelowCart[i].dataValues.Product.name,
         price: ordersBelowCart[i].dataValues.Product.price,
+        order_item_id: ordersBelowCart[i].dataValues.id,
       });
     }
     return res.json({
