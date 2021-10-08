@@ -6,7 +6,7 @@ const { Products, Order, Order_item, Product_history, Product_detail } = db;
 const productHistoryController = {
   addProductHistory: async (req, res) => {
     const targetProductArr = req.body;
-    console.log(targetProductArr);
+
     let result;
     let tempArr = [];
     if (!targetProductArr) throw new BadRequestError('沒有帶上需要的資料');
@@ -15,10 +15,9 @@ const productHistoryController = {
         name: each.name,
         price: each.price,
       });
-      console.log(result);
+
       tempArr.push(result);
     });
-    console.log(tempArr);
     if (!result) throw new BadRequestError('歷史訂單寫入失敗，請稍候再重試');
     return res.json({
       ok: 1,
@@ -32,7 +31,7 @@ const productHistoryController = {
       where: { order_id: orderId },
       include: [Product_history, Product_detail],
     });
-    console.log(firstResult);
+
     if (!firstResult) {
       return res.json({
         ok: 1,

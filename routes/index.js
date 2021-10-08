@@ -144,7 +144,7 @@ router.post(
 router.get(
   '/order-items',
   catchAsyncError(checkPermission('isConsumer')),
-  catchAsyncError(orderItemController.getOrderItem)
+  catchAsyncError(orderItemController.getOrderItems)
 ); // 用使用者 id ，搜出她的購物車底下的所有 order items
 router.get(
   '/order-item/:id',
@@ -152,9 +152,14 @@ router.get(
   catchAsyncError(orderItemController.getSingleOrderItem)
 ); // 用 order-item-id 搜出這個物品的明細
 router.patch(
-  '/order-items',
+  '/order-item-detail',
   catchAsyncError(checkPermission('isConsumer')),
-  catchAsyncError(orderItemController.updateOrderItem)
+  catchAsyncError(orderItemController.updateOrderItemDetail)
+);
+router.patch(
+  '/order-items-history',
+  catchAsyncError(checkPermission('isConsumer')),
+  catchAsyncError(orderItemController.updateOrderItemHistory)
 );
 router.delete(
   '/order-items',

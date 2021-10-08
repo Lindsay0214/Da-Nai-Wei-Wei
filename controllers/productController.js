@@ -101,7 +101,6 @@ const productController = {
   },
   getMenu: async (req, res) => {
     const { brandName } = req.params;
-    console.log(brandName);
     const result = await User.findOne({
       where: {
         brand_name: {

@@ -65,7 +65,6 @@ const userController = {
 
   getMyInfo: async (req, res) => {
     const { userId } = req.session; // get user id
-    console.log('-------userId--------', userId);
     const user = await User.findByPk(userId);
     if (!user) throw new BadRequestError('唉唷！遇到了一些狀況呢...');
     return res.status(200).json({ ok: 1, data: user });

@@ -43,7 +43,7 @@ const orderItemController = {
       });
     }
   },
-  getOrderItem: async (req, res, next) => {
+  getOrderItems: async (req, res, next) => {
     const user_id = req.session.userId;
     const firstResult = await Order.findOne({ where: { user_id, is_paid: false } });
     if (!firstResult) {
@@ -106,7 +106,7 @@ const orderItemController = {
       data,
     });
   },
-  updateOrderItem: async (req, res) => {
+  updateOrderItemDetail: async (req, res) => {
     const { id, detail_id, quantity } = req.body;
     if (quantity <= 0) {
       res.status(400).json({
@@ -117,6 +117,24 @@ const orderItemController = {
     if (!id || !detail_id || !quantity)
       throw new GeneralError('order_item 的 id 或 detail_id 或 quantity 沒有填寫');
     await Order_item.update({ detail_id, quantity }, { where: { id } });
+    return res.json({
+      ok: 1,
+      message: '修改成功',
+    });
+  },
+  updateOrderItemHistory: async (req, res) => {
+    const targetProductArr = req.body;
+    if (!targetProductArr) throw new GeneralError('沒有帶上資料');
+    for (i = 0; i < targetProductArr.length; i++) {
+      const { name, price, order_item_id } = targetProductArr[i];
+      if (!name || !price || !order_item_id) throw new GeneralError('帶上的資料不完整');
+      const updateResult = await Order_item.update(
+        { history_name: name, history_price: price },
+        { where: { id: order_item_id } }
+      );
+      if (updateResult[0] !== 1) throw new GeneralError('寫入資料庫失敗');
+    }
+
     return res.json({
       ok: 1,
       message: '修改成功',
@@ -136,8 +154,9 @@ const orderItemController = {
     const { orderId } = req.params;
     const ordersBelowCart = await Order_item.findAll({
       where: { order_id: orderId },
-      include: [Product],
+      include: [Product, Product_detail],
     });
+    // console.log(ordersBelowCart[0].dataValues);
     const targetProductArr = [];
     if (!ordersBelowCart) throw new BadRequestError('查無此筆購物車資料，請稍候再重新整理');
     for (let i = 0; i < ordersBelowCart.length; i += 1) {
@@ -145,8 +164,13 @@ const orderItemController = {
         name: ordersBelowCart[i].dataValues.Product.name,
         price: ordersBelowCart[i].dataValues.Product.price,
         order_item_id: ordersBelowCart[i].dataValues.id,
+        productDetail: ordersBelowCart[i].dataValues.Product_detail.dataValues,
+        history_name: ordersBelowCart[i].dataValues.history_name,
+        history_price: ordersBelowCart[i].dataValues.history_price,
+        quantity: ordersBelowCart[i].dataValues.quantity,
       });
     }
+    console.log(targetProductArr);
     return res.json({
       ok: 1,
       message: '查詢成功',

@@ -161,7 +161,7 @@ const orderController = {
         message: '這個 user_id 還沒有購物車',
       });
     }
-    const { id, status, item_count, total_price, is_paid } = result.dataValues;
+    const { id, status, item_count, total_price, is_paid, updateAt } = result.dataValues;
     return res.json({
       ok: 1,
       message: '找到了，有一筆符合的資料',
@@ -172,6 +172,7 @@ const orderController = {
       is_paid, // order 這張表格裡面的 is_paid
       nickname,
       email,
+      updateAt,
     });
   },
 };

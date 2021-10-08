@@ -11,9 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Order_item.belongsTo(models.Order, { foreignKey: 'order_id' });
       Order_item.belongsTo(models.Product, { foreignKey: 'product_id' });
-      Order_item.belongsTo(models.Product_history, {
-        foreignKey: 'history_id',
-      });
       Order_item.belongsTo(models.Product_detail, {
         foreignKey: 'detail_id',
       });
@@ -23,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       order_id: DataTypes.INTEGER,
       product_id: DataTypes.INTEGER,
-      history_id: DataTypes.INTEGER,
+      history_price: DataTypes.STRING,
+      history_name: DataTypes.STRING,
       detail_id: DataTypes.INTEGER,
       quantity: DataTypes.INTEGER,
     },
