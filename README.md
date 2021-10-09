@@ -26,6 +26,47 @@ Clone [你訂](https://order.nidin.shop/)部份功能的線上訂購飲料平台
 - API
   - Imgur API
 
+## 目錄結構說明
+```
+├── config                      // 靜態資源
+|   └── config.json
+├── controllers                      
+│   ├── adminController.js                
+│   ├── orderController.js       
+│   ├── orderItemController.js 
+│   ├── paymentController.js
+│   ├── productController.js
+│   ├── productDetailController.js
+│   ├── productHistoryController.js
+|   └── userController.js
+├── middlewares 
+|   ├── error
+|   |   ├── errorHandler.js
+|   |   └── errors.js
+│   ├── auth.js
+|   └── checkPermission.js
+├── migrations 
+├── models                      
+│   ├── index.js                
+│   ├── order_item.js       
+│   ├── order.js 
+│   ├── product_detail.js
+│   ├── product_history.js
+│   ├── product.js
+|   └── user.js
+├── routes                      
+|   └── index.js
+├── seeders                      
+├── .eslintrc.js
+├── .prettierrc.js
+├── index.js
+├── package-lock.json
+├── package.json
+├── README.md
+├── settings.json
+└── yarn.lock
+
+```
 ## 如何本地端執行
 
 0. 本地端要有 Express、Sequelize、Git、SQL 環境
