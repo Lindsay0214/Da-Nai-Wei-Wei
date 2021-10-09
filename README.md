@@ -28,7 +28,7 @@ Clone [你訂](https://order.nidin.shop/)部份功能的線上訂購飲料平台
 
 ## 目錄結構說明
 ```
-├── config                      // 靜態資源
+├── config                      
 |   └── config.json
 ├── controllers                      
 │   ├── adminController.js                
