@@ -26,7 +26,7 @@ const orderItemController = {
           message: '商品編號或是冰糖編號或是數量沒有填寫',
         });
       }
-      const result = await Order_item.create({
+      await Order_item.create({
         order_id,
         product_id,
         detail_id,
@@ -43,10 +43,9 @@ const orderItemController = {
       });
     }
   },
-  getOrderItem: async (req, res, next) => {
+  getOrderItems: async (req, res, next) => {
     const user_id = req.session.userId;
     const firstResult = await Order.findOne({ where: { user_id, is_paid: false } });
-    console.log(firstResult);
     if (!firstResult) {
       return res.json({
         ok: 1,
@@ -107,7 +106,7 @@ const orderItemController = {
       data,
     });
   },
-  updateOrderItem: async (req, res) => {
+  updateOrderItemDetail: async (req, res) => {
     const { id, detail_id, quantity } = req.body;
     if (quantity <= 0) {
       res.status(400).json({
@@ -123,6 +122,23 @@ const orderItemController = {
       message: '修改成功',
     });
   },
+  updateOrderItemHistory: async (req, res) => {
+    const targetProductArr = req.body;
+    if (!targetProductArr) throw new GeneralError('沒有帶上資料');
+    for (i = 0; i < targetProductArr.length; i++) {
+      const { name, price, order_item_id } = targetProductArr[i];
+      if (!name || !price || !order_item_id) throw new GeneralError('帶上的資料不完整');
+      const updateResult = await Order_item.update(
+        { history_name: name, history_price: price },
+        { where: { id: order_item_id } }
+      );
+      if (updateResult[0] !== 1) throw new GeneralError('寫入資料庫失敗');
+    }
+    return res.json({
+      ok: 1,
+      message: '修改成功',
+    });
+  },
   deleteOrderItem: async (req, res) => {
     const { id } = req.body; // 如果資料庫沒有這個 id ，執行 sql 語句也不會發生事情，就不用處理囉？！
     if (!id) throw new GeneralError('id 沒有填寫');
@@ -133,11 +149,11 @@ const orderItemController = {
     });
   },
 
-  getOrderHistory: async (req, res) => {
+  getItemsByOrderId: async (req, res) => {
     const { orderId } = req.params;
     const ordersBelowCart = await Order_item.findAll({
       where: { order_id: orderId },
-      include: [Product],
+      include: [Product, Product_detail],
     });
     const targetProductArr = [];
     if (!ordersBelowCart) throw new BadRequestError('查無此筆購物車資料，請稍候再重新整理');
@@ -145,6 +161,11 @@ const orderItemController = {
       targetProductArr.push({
         name: ordersBelowCart[i].dataValues.Product.name,
         price: ordersBelowCart[i].dataValues.Product.price,
+        order_item_id: ordersBelowCart[i].dataValues.id,
+        productDetail: ordersBelowCart[i].dataValues.Product_detail.dataValues,
+        history_name: ordersBelowCart[i].dataValues.history_name,
+        history_price: ordersBelowCart[i].dataValues.history_price,
+        quantity: ordersBelowCart[i].dataValues.quantity,
       });
     }
     return res.json({

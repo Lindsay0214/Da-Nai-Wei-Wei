@@ -39,22 +39,15 @@ const adminController = {
     });
     return res.json({ ok: 1, message: '新增店家成功～' });
   },
-
   updateShop: async (req, res) => {
     const { id } = req.params;
-    const { address, brand_name, URL } = req.body;
-    // if (!address || !brand_name || !URL) throw new GeneralError('上面欄位，填好，填滿');
+    const { address, brand_name } = req.body;
     if (!address || !brand_name) throw new GeneralError('上面欄位，填好，填滿');
     const user = await User.findByPk(id);
     await user.update({
       address,
       brand_name,
     });
-    // await user.update({
-    //   address,
-    //   brand_name,
-    //   URL,
-    // });
     if (!user) throw new BadRequestError('查無此店家');
     return res.json({ ok: 1, message: '修改店家成功～' });
   },

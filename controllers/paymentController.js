@@ -14,7 +14,6 @@ const onTimeValue = function () {
   const hh = date.getHours();
   const mi = date.getMinutes();
   const ss = date.getSeconds();
-
   return [
     date.getFullYear(),
     `/${mm > 9 ? '' : '0'}${mm}`,
@@ -78,7 +77,6 @@ const paymentController = {
     const tradeAmt = req.body.TradeAmt;
     const paymentDate = req.body.PaymentDate;
     const paymentType = req.body.PaymentType;
-
     const paymentInfo = {
       merchantID: merchantID,
       merchantTradeNo: merchantTradeNo,
