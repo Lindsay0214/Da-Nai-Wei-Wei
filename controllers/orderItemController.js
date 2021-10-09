@@ -26,7 +26,7 @@ const orderItemController = {
           message: '商品編號或是冰糖編號或是數量沒有填寫',
         });
       }
-      const result = await Order_item.create({
+      await Order_item.create({
         order_id,
         product_id,
         detail_id,
@@ -134,7 +134,6 @@ const orderItemController = {
       );
       if (updateResult[0] !== 1) throw new GeneralError('寫入資料庫失敗');
     }
-
     return res.json({
       ok: 1,
       message: '修改成功',
@@ -156,7 +155,6 @@ const orderItemController = {
       where: { order_id: orderId },
       include: [Product, Product_detail],
     });
-    // console.log(ordersBelowCart[0].dataValues);
     const targetProductArr = [];
     if (!ordersBelowCart) throw new BadRequestError('查無此筆購物車資料，請稍候再重新整理');
     for (let i = 0; i < ordersBelowCart.length; i += 1) {
@@ -170,7 +168,6 @@ const orderItemController = {
         quantity: ordersBelowCart[i].dataValues.quantity,
       });
     }
-
     return res.json({
       ok: 1,
       message: '查詢成功',

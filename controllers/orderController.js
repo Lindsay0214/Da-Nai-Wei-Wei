@@ -6,6 +6,7 @@ const { Order, Product, Order_item, User } = db;
 const orderController = {
   addShoppingCart: async (req, res) => {
     const user_id = req.session.userId;
+    console.log(req.session);
     const result = await Order.findOrCreate({
       where: { user_id, is_paid: 0 },
       defaults: {
@@ -77,7 +78,6 @@ const orderController = {
   },
   updateShoppingCart: async (req, res) => {
     const user_id = req.session.userId;
-    // const { id: order_id } = await Order.findOne({ where: { user_id } });
     const orderResult = await Order.findOne({
       where: { user_id, is_paid: 0 },
       include: Order_item, // 關聯到 Order_item 這張表格
@@ -120,14 +120,12 @@ const orderController = {
   deleteShoppingCart: async (req, res) => {
     const user_id = req.session.userId;
     if (!user_id) throw new GeneralError('查無此筆資料');
-    // 這邊只有刪除 Order 沒有把 order-items 刪掉，之後看需不需要
     await Order.destroy({ where: { user_id, is_paid: 0 } });
     return res.json({
       ok: 1,
       message: '刪除成功',
     });
   },
-
   getIsPaid: async (req, res) => {
     const user_id = req.session.userId;
     const { order_id } = req.params;
@@ -165,11 +163,11 @@ const orderController = {
     return res.json({
       ok: 1,
       message: '找到了，有一筆符合的資料',
-      order_id: id, // order 這張表格裡面的 id
-      status, // order 這張表格裡面的 status
-      item_count, // order 這張表格裡面的 item_count
-      total_price, // order 這張表格裡面的 total_price
-      is_paid, // order 這張表格裡面的 is_paid
+      order_id: id,
+      status,
+      item_count,
+      total_price,
+      is_paid,
       nickname,
       email,
       updatedAt,
